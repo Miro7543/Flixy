@@ -9,7 +9,7 @@ const pool=new pg.Pool({
 })
 
 pool.on("connect",()=>{
-    console.log("Connected to database");
+    console.log("\x1b[34mConnected to database\x1b[37m");
 })
 
 pool.on("error",(err)=>{

@@ -1,0 +1,21 @@
+:root {
+    --text-primary: #fff;
+    --text-secondary: #bbb;
+    --main-accent:#0c6dcf;
+    --darker-accent:#09549f;
+    --darkest-accent:#094480;
+    /* --bg-primary: #23232e; */
+    /* --bg-secondary: #141418; */
+}
+
+*{
+    font-family: 'Englebert', cursive;
+}
+
+a{
+    text-decoration: none;
+    color:var(--darker-accent);
+}
+a:hover{
+    color:var(--darkest-accent);
+}

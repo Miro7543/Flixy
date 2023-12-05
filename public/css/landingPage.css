@@ -1,0 +1,68 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    width: 100vw;
+    overflow: hidden;
+}
+
+#viewport{
+    height: calc(100vh - 80px);
+    overflow: auto;
+    width: 100%;
+}
+
+div.header{
+    position: sticky;
+    top: 0;
+    height: 80px;
+    width: 100%;
+    background-color: rgb(153, 173, 189);
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    font-size: 1.3rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
+    box-sizing: border-box;
+}
+div.header>div>*{
+    margin-left: 30px;
+}
+.header h1{
+    color: var(--darker-accent)
+}
+
+div.segment{
+    height: calc(100vh - 80px);
+    width: 100%; 
+    border-bottom: 1px solid black;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px; 
+    background: linear-gradient(to top, #ddd, #fff, #ddd);
+}
+
+.segmentTitle{
+    font-size: 6rem;
+    font-weight: 700;
+    font-family: 'Playpen Sans', cursive;
+    color: var(--main-accent);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--main-accent);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color:transparent;
+}
