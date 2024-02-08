@@ -1,3 +1,6 @@
+*.bat
+*.rest
+
 # Logs
 logs
 *.log
