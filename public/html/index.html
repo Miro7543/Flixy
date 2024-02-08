@@ -6,7 +6,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="landingPage.css">
     <link rel="stylesheet" href="variables.css">
-
+    <link rel="stylesheet" href="sidelinks.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script defer src="scrolling.js"></script>
+    <script src="sockets.js"></script>
 </head>
 <body>
     <div class="header">
@@ -14,47 +17,73 @@
             <h1>Flixy</h1>
         </div>
         <div>
-            <!-- $Header$ -->
-            <a href="/login">
-                Login
-            </a>
-            <a href="/register">
-                Register
-            </a>
+            $header$
         </div>
     </div>
     <div id="viewport">
+        <div id="side-links">
+            <a href="#landing-page">
+                <img src="home.png" alt="">
+            </a>
+            <a href="#tic-tac-toe">
+                <img src="tic-tac-toe.png" alt="TTT">
+            </a>
+            <a href="#bulls-and-cows">
+                <img src="bulls-and-cows.png" alt="BC">
+            </a>
+            <a href="#sudoku">
+                <img src="sudoku.png" alt="S">
+            </a>
+            <a href="#dots-and-boxes">
+                <img src="dots-and-boxes.png" alt="DB">
+            </a>
+            <a href="#battleships">
+                <img src="battleships.png" alt="B">
+            </a>
+        </div>
+        <a name="landing-page"></a>
         <div class="segment">
             <h1 class="segmentTitle">
                 Flixy
             </h1>
+
         </div>
+        
+        <a name="tic-tac-toe"></a>
         <div class="segment">
             <h1 class="segmentTitle">
                 Tic-Tac-Toe
             </h1>
         </div>
+        
+        <a name="bulls-and-cows"></a>
         <div class="segment">
             <h1 class="segmentTitle">
                 Bulls and Cows
             </h1>
         </div>
+        
+        <a name="sudoku"></a>
         <div class="segment">
             <h1 class="segmentTitle">
                 Sudoku
             </h1>
         </div>
+
+        <a name="dots-and-boxes"></a>
         <div class="segment">
             <h1 class="segmentTitle">
                 Dots and Boxes
             </h1>
         </div>
+       
+        <a name="battleships"></a>
         <div class="segment">
             <h1 class="segmentTitle">
                 Battleships
             </h1>
         </div>
-    </div>
 
+    </div>
 </body>
 </html>

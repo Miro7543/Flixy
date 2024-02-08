@@ -1,0 +1,26 @@
+{
+    "GET":{
+        "register":{
+            "needsSession":false
+        },
+        "login":{
+            "needsSession":false
+        },
+        "logout":{
+            "needsSession":true
+        },
+        "profile":{
+            "needsSession":true
+        }
+    },
+    "POST":{
+        "register":{
+            "fields":["username", "email", "password1", "password2"],
+            "needsSession":false
+        },
+        "login":{
+            "fields":["username", "password"],
+            "needsSession":false
+        }
+    }
+}

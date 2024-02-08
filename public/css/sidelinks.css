@@ -1,0 +1,31 @@
+#side-links{
+    position:fixed;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 70px;
+    height: calc(100vh - 80px);
+
+}
+
+#side-links img{
+    width: 60px;
+    filter: grayscale(50%);
+    transition: width 0.2s, filter 0.2s, margin 0.2s;
+}
+
+#side-links img:hover{
+    width: 70px;
+    margin: 15px 0;
+    filter: grayscale(0);
+    transition: width 0.3s, margin 0.3, filter 0.3s;
+}
+#side-links a.selected img{
+    width: 70px;
+    margin: 15px 0;
+    filter: grayscale(0);
+    transition: width 0.3s, margin 0.3, filter 0.3s;
+}

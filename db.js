@@ -13,7 +13,14 @@ pool.on("connect",()=>{
 })
 
 pool.on("error",(err)=>{
-    console.log(err);
+    console.error(err);
 })
 
 pool.connect();
+
+module.exports={
+    query:(query, options)=>{
+        return pool.query(query, options)
+        .catch(err=>{console.error(err); throw err});
+    }
+}

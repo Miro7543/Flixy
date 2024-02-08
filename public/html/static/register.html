@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="formsStyle.css">
     <link rel="stylesheet" href="variables.css">
-
+    <!-- <script defer src="forms.js"></script> -->
 </head>
 <body>
     <form action="/register" method="POST">
@@ -14,10 +14,10 @@
         <h3>Register</h1>
         <div>
             <label for="username">Username</label>
-            <input type="username" name="username" placeholder="Enter Username" required>
+            <input type="text" name="username" placeholder="Enter Username" required>
         </div>
         <div>
-            <label for="email">Email</label>
+            <label for="email">Email</label> 
             <input type="email" name="email" placeholder="Enter Email" required>
         </div>
         <div>
@@ -28,6 +28,7 @@
             <label for="password2">Password</label>
             <input type="password" name="password2" placeholder="Enter Password" required>
         </div>
+        <label class="error-message"></label>
         <input type="submit" value="Register">
     </form>
 </body>
