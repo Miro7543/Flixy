@@ -1,7 +1,7 @@
 const { Transform } = require('stream');
 const path=require("path");
 const fs=require("fs");
-const htmlFolder=path.join(__dirname, "public","html");
+const htmlFolder=path.join(__dirname,"../", "public","html");
 const htmlFiles=fs.readdirSync(path.join(htmlFolder,"static"));
 
 const DefExp=new RegExp(/\$.+\$/,"g")

@@ -5,17 +5,22 @@ const server = createServer(app);
     
 const fs=require("fs");
 const path=require("path");
-const db= require("./db");
-const pages=require("./pages.js");
-const middlewares=require("./middlewares.js");
-const accountsRouter=require("./accounts.js");
+const db= require("./modules/db.js");
+const pages=require("./modules/pages.js");
+const middlewares=require("./modules/middlewares.js");
+const accountsRouter=require("./modules/accounts.js");
 const cookieParser = require('cookie-parser');
-const io= require("./sockets.js")(server);
-io.on("connection",(socket)=>{
-    io.fetchSockets().then(data=>{console.log(data.map(s=>s.handshake.auth))})
+const sockets = require("./modules/sockets.js");
+const auth = require("./modules/auth.js");
+sockets.init(server);
+// io.on("connection",(socket)=>{
+    // socket.on("",(data)=>{
+
+    // })
+    // io.fetchSockets().then(data=>{console.log(data.map(s=>s.handshake.auth))})
     // console.log(.sockets.entries());
     // console.log(socket.handshake.auth)
-})
+// })
 require("dotenv").config()
 
 app.use(cookieParser());
@@ -26,7 +31,7 @@ app.use(express.static(path.join(__dirname, "public", "javascript")))
 
 app.use(express.urlencoded({extended:true}))
 app.use(middlewares.validateFields);//Check if there are enough fields in the body
-app.use(middlewares.authentication);
+app.use(auth.authenticate);
 app.use(middlewares.checkSessionRequirement);
 
 app.use(pages.staticHTMLS)//Return static htmls (login, register ...)
@@ -59,7 +64,7 @@ app.get("/",(req,res)=>{
 })
 
 server.listen(process.env.PORT,()=>{
-    console.log(`\x1b[34mserver running on ${process.env.PORT}\x1b[37m`)
+    console.log(`\x1b[34mServer running on ${process.env.PORT}\x1b[37m`)
 });
 
 module.exports = app;
