@@ -66,6 +66,8 @@ router.get("/:code", (req,res)=>{
     }
     //Has space?
     //Has lobby?
+    //Is the correct type of game
+
     
     retrieveMessages(req.params.code,req.user)
     .then(data=>{
@@ -124,7 +126,7 @@ function joinLobby(socket,io,code ){
 function socketDisconnect(socket,io,code){
     socket.ON("disconnect",()=>{
         if(socket?.user?.sessionid)
-        db.query("delete from players_lobbies using users, lobbies where players_lobbies.userid = users.id and users.sessionid = $1 and players_lobbies.lobbyid = lobbies.id and lobbies.code = $2",[socket.user.sessionid, code])
+        db.query("delete from players_lobbies using users, lobbies where players_lobbies.userid = users.id and users.sessionid = $1 and players_lobbies.lobbyid = lobbies.id and lobbies.code = $2 and players_lobbies.status = 'in lobby' ",[socket.user.sessionid, code])
         .then(()=>{
             // socket.to(code).emit("playerLeft",{username : socket?.user?.username})
             return getPlayersInLobby(code)
@@ -136,7 +138,6 @@ function socketDisconnect(socket,io,code){
 }
 
 function messageCreated(socket,io,code){
-    console.log(socket.user);
     if(!socket?.user?.username)socket.emit("redirect","/");
     socket.ON("message",(message)=>{
         io.to(code).emit("newMessage",message, socket?.user?.username);
@@ -144,17 +145,40 @@ function messageCreated(socket,io,code){
     })
 }
 
-function attachSocket(socket,io){
-    const code = socket.url.slice(-4).toUpperCase();
+function attachSocket(socket,io,code){
     joinLobby(socket,io,code );
     socketDisconnect(socket,io,code);
     messageCreated(socket,io,code);
     startingGame(socket,io,code);
-    // })
-    // .catch(err=>{console.error(err)})
-    // socket.in(code).on("joinLobby",()=>{
+}
 
-    // })
+function startingGame(socket,io,code){
+
+    socket.ON("startGame",()=>{
+        //checkPlayerCount();
+        getGame(socket.user.sessionid)
+        .then(data=>{
+            return db.query("UPDATE players_lobbies SET status = 'in game' WHERE lobbyid IN (SELECT id FROM lobbies WHERE code = $1)",[code])
+            .then(()=>data);      
+        })
+        .then(data=>{
+            if(data){
+                io.to(code).emit("GameStarted",{game:data,code});
+            }
+            else socket.emit("redirect",{url:"/"})
+
+        })
+    })
+}
+
+function getGame(sessionid){
+    return db.query("Select * from lobby_players where sessionid = $1", [sessionid])
+    .then(data=>{
+
+        if(data.rowCount)
+            return data.rows[0].game;
+        else return;
+    })
 }
 
 

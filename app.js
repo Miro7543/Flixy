@@ -10,10 +10,11 @@ const db= require("./modules/db.js");
 const pages=require("./modules/pages.js");
 const middlewares=require("./modules/middlewares.js");
 const accountsRouter=require("./modules/accounts.js");
-const lobbiesRouter=require("./modules/lobbies.js");
 const cookieParser = require('cookie-parser');
 const sockets = require("./modules/sockets.js");
 const auth = require("./modules/auth.js");
+const lobbiesRouter=require("./modules/lobbies.js").router;
+const tttRouter=require("./modules/games/TTT.js").router;
 
 sockets.init(server);
 require("dotenv").config()
@@ -33,7 +34,8 @@ app.use(pages.staticHTMLS)//Return static htmls (login, register ...)
 
 
 app.use(accountsRouter.router);
-app.use("/lobby",lobbiesRouter.router)
+app.use("/lobby",lobbiesRouter)
+app.use("/tic-tac-toe",tttRouter)
 
 app.get("/",(req,res)=>{
     let header=`

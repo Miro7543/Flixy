@@ -27,6 +27,12 @@
         },
         "/lobby":{
             "needsSession":true
+        },
+        "/tictactoe":{
+            "needsSession":true
+        },
+        "/sudoku":{
+            "needsSession":true
         }
     }
 }

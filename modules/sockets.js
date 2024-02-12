@@ -1,20 +1,23 @@
 const { Server } = require("socket.io");
 const redis = require("./redis")
-const jwt =require("jsonwebtoken");
 const auth =require("./auth");
 
-const lobbies = require("./lobbies");
-const sudoku = require("../games/sudoku");
-// const ttt = require("../games/ttt");
+const urlToModule = [
+    {reg:RegExp(/\/lobby\/[a-z,A-Z]{4}$/) , module : require("./lobbies")},
+    {reg:RegExp(/\/sudoku\/[a-z,A-Z]{4}$/) , module : require("./games/sudoku")},
+    {reg:RegExp(/\/ttt\/[a-z,A-Z]{4}$/) , module : require("./games/TTT")},
+    // {reg:RegExp(/\/lobby\/[a-z,A-Z]{4}$/) , module : sudoku}
+]
 
 let io;
 
 
 function attachListeners(socket,IO){
     socket.url = socket.handshake.headers.referer;
-    const lobbyRegex = RegExp(/\/lobby\/[a-z,A-Z]{4}$/);
-    if(lobbyRegex.test(socket.url)){
-        lobbies.attachSocket(socket,IO);
+    const code = socket.url.slice(-4).toUpperCase();
+    for(let url of urlToModule){
+        if(url.reg.test(socket.url))
+            url.module.attachSocket(socket,IO,code)
     }
 }
 
@@ -38,9 +41,7 @@ function cookiesConverter(cookiesS){
 function authenticater(socket){
     return function(event, cb){
         socket.on(event,(...args)=>{
-            console.log(socket.token)
             const inSession = auth.isValid(socket.token);
-            console.log(inSession);
             if(!inSession){
                 socket.emit("redirect", {url:"/"})
                 return;

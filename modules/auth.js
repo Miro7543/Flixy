@@ -1,17 +1,14 @@
 const jwt = require("jsonwebtoken");
 const redis = require("./redis");
-
-const refreshTreshold = 0.5;
-const refreshedAge = 1;
-
+const settings = require("../settings.json");
 
 function isAboutToExpire(exp){
     const timeRemaining = exp * 1000 - Date.now();
-    return timeRemaining < refreshTreshold * 60 * 1000 && timeRemaining > 0;
+    return timeRemaining < settings.refreshSessionThreshold * 60 * 1000 && timeRemaining > 0;
 }
 
 function generateToken(payload) {
-    return jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${refreshedAge}m`})
+    return jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${settings.sessionTime}m`})
 }
 
 function refreshToken(payload){
@@ -32,8 +29,8 @@ module.exports = {
         const { exp } = user;
         if(isAboutToExpire(exp)){
             const newToken=refreshToken(user);
-            res.cookie("token",newToken,{ maxAge:60*1000*refreshedAge})
-            redis.expire("sid-id:" + user.sessionid,60*refreshedAge);
+            res.cookie("token",newToken,{ maxAge:60*1000*settings.sessionTime})
+            redis.expire("sid-id:" + user.sessionid,60*settings.sessionTime);
         }
         req.user = user;
         
@@ -47,7 +44,6 @@ module.exports = {
         if (user) {
             const { exp } = user;
             if(isAboutToExpire(exp)){
-                console.log("expiring");
                 user.newToken=refreshToken(user);
             }
             return user;

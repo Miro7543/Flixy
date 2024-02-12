@@ -1,0 +1,85 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+div.viewport{
+    height: 100vh;
+    width: 100vw;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 50px;
+    box-sizing: border-box;
+    gap: 40px;
+    align-items: stretch;
+}
+div{
+    display: flex;
+}
+
+div.playerCont{
+    flex: 1 1;
+    background-color: rgb(233, 214, 185);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 400;
+    transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
+}
+div.playerCont:hover{
+    background-color: rgb(221, 187, 134);
+    font-size: 2.5rem;
+    font-weight: 700;
+    transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
+}
+
+div.board{
+    flex: 3;
+    flex-direction: column;
+    background-color: rgb(164, 200, 200);
+    align-items: stretch;
+    padding :50px;
+    padding-top: 0;
+}
+
+table{
+    flex-direction: column;
+    flex :1;
+    display: flex;
+}
+
+tbody{
+    display: flex;
+    flex-direction: column;
+    flex :1;
+    row-gap: 15px;
+}
+
+tr{
+    column-gap: 15px;
+    flex: 1;
+    display: flex;
+}
+td{
+    background-color: rgb(135, 222, 215);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5vw;
+    transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
+}
+
+td:hover{
+    cursor: pointer;
+    font-size: 6vw;
+    background-color: rgb(120, 195, 188);
+    transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
+}
+
+label.clock{
+    font-size: 4rem;
+    margin: 30px;
+    text-align: center;
+}

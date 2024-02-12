@@ -44,3 +44,7 @@ socket.on("newMessage",(message,username)=>{
     document.querySelector("div.messagesCont").innerHTML += messageHTML;
 })
 
+socket.on("GameStarted",(data)=>{
+    window.location.href = "/" + data.game + "/" + data.code;
+    // document.querySelector("div.playersCont").innerHTML = data.players;
+})

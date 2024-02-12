@@ -6,12 +6,12 @@ const db=require("./db");
 const redis=require("./redis");
 const crypto=require("crypto");
 const sockets = require("./sockets");
+const settings = require("../settings.json")
 
 const numberExp=new RegExp(/[0-9]/,"g")
 const letterExp=new RegExp(/[a-z]/,"g")
 const capLetterExp=new RegExp(/[A-Z]/,"g")
 const specialSymbolExp=new RegExp(/[-\.\_\>\<\?\+\*\/\#\@\!\&\\]/,"g");
-const sessionAge=0.3;
 
 function generateCode(length) {
     const randomBytes = crypto.randomBytes(Math.ceil(length / 2));
@@ -73,12 +73,12 @@ function startSession(user, res){
             sessionid : data?.rows[0]?.sessionid,
             username : data?.rows[0]?.username
         };
-        const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${sessionAge}m`}); 
-        res.cookie("token", token, { maxAge:60*1000*sessionAge});
+        const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${settings.sessionTime}m`}); 
+        res.cookie("token", token, { maxAge:60*1000*settings.sessionTime});
         return data.rows[0].sessionid;
     })
     .then((sessionid)=>{
-        return redis.setex("sid-id:" + sessionid, 60*sessionAge, `${user.id}`);
+        return redis.setex("sid-id:" + sessionid, 60*settings.sessionTime, `${user.id}`);
     })
 }
 
