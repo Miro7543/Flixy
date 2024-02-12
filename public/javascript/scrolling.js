@@ -23,7 +23,8 @@ vp.addEventListener("wheel",(event)=>{
 })
 
 document.addEventListener("keydown",(ev)=>{
-    moveToNextAnchor(ev.keyCode-39);
+    if(Math.abs(ev.keyCode-39)<=1)
+        moveToNextAnchor(ev.keyCode-39);
 })
 
 document.addEventListener("DOMContentLoaded",()=>{

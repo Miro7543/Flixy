@@ -1,26 +1,32 @@
 {
     "GET":{
-        "register":{
+        "/register":{
             "needsSession":false
         },
-        "login":{
+        "/login":{
             "needsSession":false
         },
-        "logout":{
+        "/logout":{
             "needsSession":true
         },
-        "profile":{
+        "/profile":{
+            "needsSession":true
+        },
+        "/lobby":{
             "needsSession":true
         }
     },
     "POST":{
-        "register":{
+        "/register":{
             "fields":["username", "email", "password1", "password2"],
             "needsSession":false
         },
-        "login":{
+        "/login":{
             "fields":["username", "password"],
             "needsSession":false
+        },
+        "/lobby":{
+            "needsSession":true
         }
     }
 }

@@ -5,22 +5,17 @@ const server = createServer(app);
     
 const fs=require("fs");
 const path=require("path");
+
 const db= require("./modules/db.js");
 const pages=require("./modules/pages.js");
 const middlewares=require("./modules/middlewares.js");
 const accountsRouter=require("./modules/accounts.js");
+const lobbiesRouter=require("./modules/lobbies.js");
 const cookieParser = require('cookie-parser');
 const sockets = require("./modules/sockets.js");
 const auth = require("./modules/auth.js");
-sockets.init(server);
-// io.on("connection",(socket)=>{
-    // socket.on("",(data)=>{
 
-    // })
-    // io.fetchSockets().then(data=>{console.log(data.map(s=>s.handshake.auth))})
-    // console.log(.sockets.entries());
-    // console.log(socket.handshake.auth)
-// })
+sockets.init(server);
 require("dotenv").config()
 
 app.use(cookieParser());
@@ -38,7 +33,7 @@ app.use(pages.staticHTMLS)//Return static htmls (login, register ...)
 
 
 app.use(accountsRouter.router);
-
+app.use("/lobby",lobbiesRouter.router)
 
 app.get("/",(req,res)=>{
     let header=`
@@ -62,6 +57,8 @@ app.get("/",(req,res)=>{
     const transformer=pages.replaceInStream({header});
     readStream.pipe(transformer).pipe(res);
 })
+
+app.post("/settoken",auth.setToken)
 
 server.listen(process.env.PORT,()=>{
     console.log(`\x1b[34mServer running on ${process.env.PORT}\x1b[37m`)

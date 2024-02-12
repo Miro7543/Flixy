@@ -1,0 +1,126 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: flex;
+}
+
+div.leftPanel{
+    width: 80vw;
+    height: 100vh;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+}
+div.rigthPanel{
+    width: 20vw;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(223, 148, 255);
+}
+div.leftPanel div.buttonsCont button{
+    height: 50px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+div.leftPanel>div.buttonsCont{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+div.leftPanel>div>button:first-child{
+    margin: 15px;
+    justify-self: start;
+}
+
+div.leftPanel>div>button:first-child{
+    justify-self: center;
+}
+
+div.playersCont{
+    flex: 1;
+    background-color: rgb(99, 210, 173);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div.playerCont{
+    width: 20%;
+    height: 80%;
+    background-color: rgb(79, 167, 138);
+}
+
+div.infoCont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+div.chatCont{
+    padding: 20px;
+    background-color: rgb(194, 128, 222);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+}
+
+div.messagesCont{
+    background-color: rgb(166, 109, 190);
+    overflow: auto;
+    padding: 10px;
+    height: 80%;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+div.messageForm{
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    height: 5%;
+
+}
+
+div.messageForm>input{
+    flex: 1 1;
+    min-width: 10px;
+}
+div.messageCont.self{
+    align-self: end;
+}
+div.messageCont.self{
+    align-items: end;
+}
+div.messageCont{
+    display: flex;
+    flex-direction: column;
+    width: min-content;
+    margin-top: 10px;
+}
+
+label.sender{
+    font-size: 10px;
+    margin-left: 5px;
+
+}
+
+label.message{
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: rgb(79, 82, 255);
+    color: white;
+    width: min-content;
+    padding: 10px;
+}
+

@@ -30,7 +30,9 @@ module.exports={
     replaceInStream:function (map){
         const transform=new Transform({
             transform(chunk,encoding,cb){
-                if(!chunk)cb(null,replaceInChunk(this.buffer ? this.buffer : "", map));
+                if(!chunk){
+                    cb(null,replaceInChunk(this.buffer ? this.buffer : "", map));
+                }
                 
                 let chunkString=chunk.toString();
                 

@@ -1,8 +1,29 @@
 const { Server } = require("socket.io");
-const redis = require("redis").createClient();
+const redis = require("./redis")
+const jwt =require("jsonwebtoken");
+const auth =require("./auth");
 
-function attachListeners(socket){
-    
+const lobbies = require("./lobbies");
+const sudoku = require("../games/sudoku");
+// const ttt = require("../games/ttt");
+
+let io;
+
+
+function attachListeners(socket,IO){
+    socket.url = socket.handshake.headers.referer;
+    const lobbyRegex = RegExp(/\/lobby\/[a-z,A-Z]{4}$/);
+    if(lobbyRegex.test(socket.url)){
+        lobbies.attachSocket(socket,IO);
+    }
+}
+
+function getToken(socket){
+    const cookies=socket.handshake.headers.cookie
+    if(!cookies)return false;
+    const token = cookiesConverter(cookies).token;
+    if(!token)return false;
+    return token;
 }
 
 function cookiesConverter(cookiesS){
@@ -14,27 +35,73 @@ function cookiesConverter(cookiesS){
     },{});
 }
 
+function authenticater(socket){
+    return function(event, cb){
+        socket.on(event,(...args)=>{
+            console.log(socket.token)
+            const inSession = auth.isValid(socket.token);
+            console.log(inSession);
+            if(!inSession){
+                socket.emit("redirect", {url:"/"})
+                return;
+            }
+            const needsRefresh = auth.needsRefresh(socket.user);
+            if(needsRefresh)
+                socket.emit("set-token",{token:needsRefresh.newToken});
+            cb(...args);
+        })
+        
+    }
+}
+
+
+
+
 module.exports ={
     init:function (server){
-        const io = new Server(server);
+        io = new Server(server);
         console.log("\x1b[34mSockets are set up and listening\x1b[37m");
+        // io.use(authenticate)
         io.on("connection",(socket)=>{
-            // console.log(socket.handshake.headers.cookie);
-            // console.log("connected");
-            //Redis
-
-            const cookies=socket.handshake.headers.cookie
-            if(!cookies)return;
-            const token = cookiesConverter(cookies).token;
-            if(!token)return;
+            socket.token = getToken(socket);//gets the token 
+            socket.url = new URL(socket.handshake.headers.referer).pathname;//gets the pathname
             
-            // redis.set(, socket.id );
-            socket.on("disconnect",(data)=>{
-                // console.log("disconected");
-                //Redis
+            auth.getData(socket.token)
+            .then(data=>{
+                if(!data){
+                    socket.emit("redirect", {url:"/"})
+                }
+                else{
+                    socket.user = data;
+                    redis.set("sid-socketid:" + data.sessionid, socket.id)
+                    .then(()=>{
+                        socket.ON = authenticater(socket);
+                        attachListeners(socket,io);
+                    })
+                } 
             })
-            attachListeners("socket");
+            
+
+            // socket.on("disconnect",(data)=>{
+            //     if(socket.user){
+            //         redis.del("sid-socketid:" + socket.user.sessionid)
+            //     }
+            // })
         })
+    },
+    logoutLastInstance:function(sessionid){
+        return redis.get("sid-socketid:" + sessionid)
+        .then(data=>{
+            if(data !== null){
+                const targetedSocket = io.sockets.sockets.get(data);  
+                if(targetedSocket){
+                    targetedSocket.emit("logout");
+                }
+            }
+        })
+    },
+    disconnectFromRoom:function(userid, lobbyid){
+
     }
 } 
 

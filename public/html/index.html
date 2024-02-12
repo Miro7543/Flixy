@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="sidelinks.css">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="scrolling.js"></script>
-    <script src="sockets.js"></script>
+    <!-- <script defer src="sockets.js"></script> -->
 </head>
 <body>
     <div class="header">
@@ -54,6 +54,14 @@
             <h1 class="segmentTitle">
                 Tic-Tac-Toe
             </h1>
+            <form action="lobby/join" class="join-lobby-form" method="post">
+                <input type="text" name="lobby_code" placeholder="Enter lobby code" pattern="^[A-Z,a-z]{4}$" title="Please enter exactly 4 letters" required>
+                <button id="JoinTTT" type="submit">Join lobby</button>
+            </form>
+            <form action="/lobby/create" class="create-lobby-form" method="post">
+                <input type="hidden" name="game" value="tic-tac-toe">
+                <button id="createTTT" type="submit">Create lobby</button>
+            </form>
         </div>
         
         <a name="bulls-and-cows"></a>

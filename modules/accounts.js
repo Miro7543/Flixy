@@ -3,12 +3,15 @@ const jwt = require("jsonwebtoken");
 const { createReadStream } = require("fs");
 const pages=require("./pages");
 const db=require("./db");
+const redis=require("./redis");
 const crypto=require("crypto");
+const sockets = require("./sockets");
 
 const numberExp=new RegExp(/[0-9]/,"g")
 const letterExp=new RegExp(/[a-z]/,"g")
 const capLetterExp=new RegExp(/[A-Z]/,"g")
 const specialSymbolExp=new RegExp(/[-\.\_\>\<\?\+\*\/\#\@\!\&\\]/,"g");
+const sessionAge=0.3;
 
 function generateCode(length) {
     const randomBytes = crypto.randomBytes(Math.ceil(length / 2));
@@ -55,33 +58,43 @@ function validateLoginInfo(loginInfo){
     })
 }
 
+function removePreviosSessions(username){
+    return db.query("Select sessionid from users where username = $1", [username])
+    .then(data=>{
+        if(!data.rowCount)return;
+        return sockets.logoutLastInstance(data.rows[0].sessionid);
+    })
+}
 
 function startSession(user, res){
-    return db.query("Update users set lastlogin=current_timestamp, token=md5(random()::text)  where id=$1 returning token,username;",[user.id])
+    return db.query("Update users set lastlogin=current_timestamp, sessionid=md5(random()::text)  where id=$1 returning sessionid,username;",[user.id])
     .then((data)=>{
         const payload={
-            // id : user.id,
-            sessionid : data.rows[0].token,
-            username : data.rows[0].username
+            sessionid : data?.rows[0]?.sessionid,
+            username : data?.rows[0]?.username
         };
-        const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: '1m'}); 
-        res.cookie("token", token, { maxAge:60*1000});
-        return;
+        const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${sessionAge}m`}); 
+        res.cookie("token", token, { maxAge:60*1000*sessionAge});
+        return data.rows[0].sessionid;
+    })
+    .then((sessionid)=>{
+        return redis.setex("sid-id:" + sessionid, 60*sessionAge, `${user.id}`);
     })
 }
 
 function endSession(req, res, cb){
-    // db.query("Update sessions set expirationdate=current_timestamp where token = $1",[req?.user?.token])
-    // .then(data=>{
-        res.cookie("token", null, { maxAge:0});
-        res.redirect('/');
-    // })
+    res.cookie("token", null, { maxAge:0});
+    redis.del("sid-id:" + req?.user?.sessionid, req?.user?.id)
+    res.redirect('/');
 }
 
 router.post("/login",(req,res)=>{
     validateLoginInfo(req.body)
     .then(user=>{
-        startSession(user,res)
+        removePreviosSessions(req.body.username)
+        .then(()=>{
+            return startSession(user,res)
+        })
         .then(()=>res.redirect("/"));
 
     })
@@ -120,27 +133,27 @@ router.post("/register",(req,res)=>{//username, email, password1, password2
         } 
     })
     .catch((err)=>{})
-    .then(()=>res.status(200).redirect('/'))//message    
+    .then(()=>res.redirect('/'))//message    
 })
 
 router.get("/logout",(req,res)=>{
-    endSession(req,res)
+    endSession(req,res);
 })
 
 router.get("/profile",(req,res)=>{
     const reader=createReadStream("./public/html/profile.html");
-    db.query("Select * from users where token = $1",[req.user.sessionid])
+    db.query("Select * from users where sessionid = $1",[req.user.sessionid])
     .then(data=>{
         if(!data.rowCount){
             //Message - profile not found
             res.redirect("/");
         }
         else {
-            console.log(data.rows[0])
             reader.pipe(pages.replaceInStream(data.rows[0])).pipe(res);
         }
     })
 })
+
 
 
 module.exports={

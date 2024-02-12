@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../lobby.css">
+    <link rel="stylesheet" href="../variables.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script defer src="../sockets.js"></script>
+    <script defer src="../lobby.js"></script>
+</head>
+<body>
+    <div class="leftPanel">
+        <div class="playersCont">
+        </div>
+        <div class="buttonsCont">
+            <form action="/lobby/leave" method="post">
+                <button class = "leaveLobbyBtn" type = "submit">Exit lobby</button>
+            </form>
+            <button class = "startGameBtn" onclick = "socket.emit('startGame')">Start Game</button>
+
+        </div>
+    </div>
+    <div class="rigthPanel">
+        <div class="infoCont">
+            <h1>$game$</h1>
+            <h2>Lobby code:<br><h1>$code$</h1></h2>
+        </div>
+    
+        <div class="chatCont">
+            <div class="messagesCont">
+                $messages$
+            </div>
+            <div class="messageForm">
+                <input class="messageInput" type="text" placeholder="Type your message here" required></input>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
