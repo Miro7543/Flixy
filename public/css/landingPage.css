@@ -13,6 +13,7 @@ body{
     height: calc(100vh - 80px);
     overflow: auto;
     width: 100%;
+    position: relative;
 }
 
 div.header{
@@ -81,3 +82,55 @@ div.segment{
 ::-webkit-scrollbar-track {
     background-color:transparent;
 }
+
+div.segment{
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    padding-right: 170px;
+    box-sizing: border-box;
+}
+div.segment.bulls-and-cows{
+    background-image: url("./bulls-and-cows.jpg");
+}
+
+div.lobbyCont{
+    height: 40vh;
+    width: 15vw;
+    background-color: white;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+    box-sizing: border-box;
+    box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
+    
+}
+div.lobbyCont>form{
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 30px;
+}
+div.lobbyCont>form>button{
+    border: none;
+    background-color: #e3c5b3;
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+div.lobbyCont>form>input{
+    padding: 15px;
+    box-sizing: border-box;
+    border: none;
+    background-color: rgb(160, 201, 255);
+    border-radius: 10px;
+} 

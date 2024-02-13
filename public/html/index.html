@@ -48,9 +48,7 @@
         
         <a name="tic-tac-toe"></a>
         <div class="segment">
-            <h1 class="segmentTitle">
-                Tic-Tac-Toe
-            </h1>
+            <div class = "lobbyCont"> 
             <form action="lobby/join" class="join-lobby-form" method="post">
                 <input type="text" name="lobby_code" placeholder="Enter lobby code" pattern="^[A-Z,a-z]{4}$" title="Please enter exactly 4 letters" required>
                 <button id="JoinTTT" type="submit">Join lobby</button>
@@ -59,12 +57,23 @@
                 <input type="hidden" name="game" value="tic-tac-toe">
                 <button id="createTTT" type="submit">Create lobby</button>
             </form>
+            </div>
         </div>
         
         <a name="bulls-and-cows"></a>
-        <div class="segment">
+        <div class="segment bulls-and-cows">
             <h1 class="segmentTitle">
-                Bulls and Cows
+                <!-- Bulls and Cows -->
+                <div class = "lobbyCont"> 
+                    <form action="lobby/join" class="join-lobby-form" method="post">
+                        <input type="text" name="lobby_code" placeholder="Enter lobby code" pattern="^[A-Z,a-z]{4}$" title="Please enter exactly 4 letters" required>
+                        <button id="JoinTTT" type="submit">Join lobby</button>
+                    </form>
+                    <form action="/lobby/create" class="create-lobby-form" method="post">
+                        <input type="hidden" name="game" value="bulls-and-cows">
+                        <button id="createTTT" type="submit">Create lobby</button>
+                    </form>
+                </div>
             </h1>
         </div>
         
