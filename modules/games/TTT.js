@@ -43,6 +43,7 @@ router.get("/:code",(req,res)=>{
 
 
 function attachSockets(socket,io,code){
+    socket.
     socket.on("play",data=>{
 
     })

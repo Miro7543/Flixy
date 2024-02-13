@@ -27,7 +27,7 @@ div.playerCont{
     font-weight: 400;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
-div.playerCont:hover{
+div.playerCont.onTurn{
     background-color: rgb(221, 187, 134);
     font-size: 2.5rem;
     font-weight: 700;
