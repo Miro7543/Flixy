@@ -14,6 +14,9 @@
         },
         "/lobby":{
             "needsSession":true
+        },
+        "/tic-tac-toe":{
+            "needsSession":true
         }
     },
     "POST":{
@@ -26,9 +29,6 @@
             "needsSession":false
         },
         "/lobby":{
-            "needsSession":true
-        },
-        "/tictactoe":{
             "needsSession":true
         },
         "/sudoku":{

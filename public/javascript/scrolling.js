@@ -6,7 +6,6 @@ const anchors=[
     "tic-tac-toe",
     "bulls-and-cows",
     "sudoku",
-    "dots-and-boxes",
     "battleships"
 ];
 let anchorIndex=0;
