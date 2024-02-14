@@ -1,12 +1,17 @@
-label.countdown{
+div.overlay>label{
     color : white;
     font-size : 15vw;
     font-weight : 600;
     transition: font-size ease-in 0.6s;
 }
-label.countdown.big{
+div.overlay>label.big{
     transition: font-size ease-in 0.01s;
     font-size : 30vw;
+}
+div.overlay>label.big-anim{
+    font-size : 30vw;
+    transition: font-size ease-in 0.6s;
+
 }
 
 
@@ -21,3 +26,4 @@ div.overlay{
     align-items : center;
     justify-content : center;
 }
+

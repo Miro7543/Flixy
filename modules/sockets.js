@@ -4,8 +4,8 @@ const auth =require("./auth");
 
 const urlToModule = [
     {reg:RegExp(/\/lobby\/[a-z,A-Z]{4}$/) , module : require("./lobbies")},
-    {reg:RegExp(/\/sudoku\/[a-z,A-Z]{4}$/) , module : require("./games/sudoku")},
-    {reg:RegExp(/\/ttt\/[a-z,A-Z]{4}$/) , module : require("./games/TTT")},
+    // {reg:RegExp(/\/sudoku\/[a-z,A-Z]{4}$/) , module : require("./games/sudoku")},
+    // {reg:RegExp(/\/ttt\/[a-z,A-Z]{4}$/) , module : require("./games/TTT")},
     // {reg:RegExp(/\/lobby\/[a-z,A-Z]{4}$/) , module : sudoku}
 ]
 

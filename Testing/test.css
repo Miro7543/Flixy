@@ -43,43 +43,66 @@ div.board{
     padding-top: 0;
 }
 
-table{
-    flex-direction: column;
-    flex :1;
+div.content{
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 30px;
+    flex: 1;
 }
 
-tbody{
+div.guessesCont{
+    flex: 1;
+    background-color: rgb(197, 166, 224);
     display: flex;
     flex-direction: column;
-    flex :1;
-    row-gap: 15px;
+    align-items: stretch;
+    padding: 15px;
+    gap:15px
+}
+label.title{
+    font-size: 1.7rem;
+    text-align: center;
 }
 
-tr{
-    column-gap: 15px;
+div.guesses{
     flex: 1;
     display: flex;
-}
-td{
-    background-color: rgb(135, 222, 215);
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5vw;
-    transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
-}
-
-td:hover{
-    cursor: pointer;
-    font-size: 6vw;
-    background-color: rgb(120, 195, 188);
-    transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
+    flex-direction: column;
+    background-color:  rgb(172, 145, 197);
 }
 
 label.clock{
     font-size: 4rem;
     margin: 30px;
     text-align: center;
+}
+
+form.guessForm{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+}
+
+div.submitionCont{
+    flex: 1;
+    /* background-color: aqua; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form *{
+    font-size: 1.3rem;
+}
+form.submitForm{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 60px;
+    background-color: aquamarine;
+}
+form.submitForm *{
+    font-size: 2rem;
 }

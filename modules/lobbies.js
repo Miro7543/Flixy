@@ -5,7 +5,10 @@ const redis = require("./redis");
 const pages = require("./pages");
 const games = require("../games.json");
 const { createReadStream } = require("fs");
-
+const moduleMap = {
+    "tic-tac-toe" : require("./games/TTT"),
+    "sudoku" : require("./games/sudoku")
+}
 function validateCode(code){
     const reg= new RegExp(/^[A-Z,a-z]{4}$/);
     return reg.test(code)
@@ -54,6 +57,22 @@ router.post("/create", (req,res)=>{
     })
 })
 
+router.get("/game.js",(req,res)=>{
+    console.log(req.user.sessionid)
+    db.query("Select game from lobby_players where sessionid = $1 and status = 'in lobby'", [req.user.sessionid])
+    .then(data=>{
+        // console.log(data.rows);
+        if(data.rowCount){
+            // console.log(path.join(__dirname, "../", "public", "javascript", data.rows[0].game + ".js"));
+            // C:\Users\Miro\Programming\Advanced_JS_Project\public\javascript\tic-tac-toe.js
+            res.setHeader("Content-Type", "application/javascript")
+            res.sendFile(path.join(__dirname, "../", "public", "javascript", data.rows[0].game + ".js"));
+            res.end()
+        }
+        else res.status(404).end();
+    })
+})
+
 router.get("/:code", (req,res)=>{
     if(!req.params || !req.params.code)
     return res.redirect("/");
@@ -78,19 +97,11 @@ router.get("/:code", (req,res)=>{
 })
 
 router.post("/leave", (req,res)=>{
-    db.query("delete from players_lobbies using users where players_lobbies.userid = users.id and users.sessionid = $1;",[req?.user?.sessionid])
+    db.query("delete from players_lobbies using users where players_lobbies.userid = users.id and users.sessionid = $1;",[req.user.sessionid])
     .then(data=>{
         res.redirect("/");
         res.end();
     })
-    
-    // redis.get(req.user.sessionid)
-    // .then(data=>{
-    //     if(!data){
-    //     }
-    // })
-
-    // res.redirect("/");
 })
 
 function joinLobby(socket,io,code ){
@@ -140,7 +151,19 @@ function socketDisconnect(socket,io,code){
 function messageCreated(socket,io,code){
     if(!socket?.user?.username)socket.emit("redirect","/");
     socket.ON("message",(message)=>{
-        io.to(code).emit("newMessage",message, socket?.user?.username);
+        const socketsInRoom = io.sockets.in(code).adapter.sids;
+        // console.log(socket.id)
+        // console.log(socketsInRoom)
+        for (const socketId of socketsInRoom) {
+            // console.log(socketId[0])
+            io.sockets.sockets.get(socketId[0]).emit(
+                "newMessage",
+                message,
+                socket?.user?.username,
+                socketId[0] === socket.id
+            );
+        }
+        // io.to(code).emit("newMessage",message, socket?.user?.username);
         db.query("Insert into messages_lobbies (userid, message, lobbycode) values ($1,$2,$3)",[socket?.user?.id, message, code])
     })
 }
@@ -150,20 +173,24 @@ function attachSocket(socket,io,code){
     socketDisconnect(socket,io,code);
     messageCreated(socket,io,code);
     startingGame(socket,io,code);
+    requestScript(socket,code);
 }
 
 function startingGame(socket,io,code){
 
     socket.ON("startGame",()=>{
         //checkPlayerCount();
-        getGame(socket.user.sessionid)
+        // getGame(socket.user.sessionid)
+        db.query("Select id,game from lobbies where code = $1",[code])
         .then(data=>{
-            return db.query("UPDATE players_lobbies SET status = 'in game' WHERE lobbyid IN (SELECT id FROM lobbies WHERE code = $1)",[code])
-            .then(()=>data);      
+            if(data.rowCount)
+                return db.query("UPDATE players_lobbies SET status = 'in game' WHERE lobbyid = $1",[data.rows[0].id])
+                .then(()=>data.rows[0].game);
         })
         .then(data=>{
             if(data){
                 io.to(code).emit("GameStarted",{game:data,code});
+                moduleMap[data].startGame(socket,io,code);
             }
             else socket.emit("redirect",{url:"/"})
 
@@ -181,9 +208,17 @@ function getGame(sessionid){
     })
 }
 
+function requestScript(socket,code){
+    db.query("Select game from lobbies where code = $1 ",[code])
+    .then(data=>{
+        if(!data.rowCount){
+            //message - Server error
+        }
+        socket.emit("get-script", {url: `${data.rows[0].game}.js`})
+    })
+}
 
 module.exports={
     router,
     attachSocket,
-
 };

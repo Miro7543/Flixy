@@ -101,7 +101,7 @@ div.lobbyCont{
     height: 40vh;
     width: 15vw;
     background-color: white;
-    border-radius: 50px;
+    border-radius: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -118,8 +118,12 @@ div.lobbyCont>form{
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 30px;
+    gap: 20px;
 }
+div.lobbyCont>form>*{
+    font-size: 1.5rem;
+}
+
 div.lobbyCont>form>button{
     border: none;
     background-color: #e3c5b3;

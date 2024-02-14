@@ -70,6 +70,12 @@ td{
     font-size: 5vw;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
+td.winning{
+    background-color: rgb(72, 179, 72);
+}
+td.losing{
+    background-color: rgb(179, 72, 72);
+}
 
 td:hover{
     cursor: pointer;

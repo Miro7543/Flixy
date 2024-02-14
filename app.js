@@ -19,11 +19,14 @@ const tttRouter=require("./modules/games/TTT.js").router;
 sockets.init(server);
 require("dotenv").config()
 
+app.use((req,res,next)=>{console.log(req.url);next()})
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public", "css"))) 
 app.use(express.static(path.join(__dirname, "public", "icons"))) 
 app.use(express.static(path.join(__dirname, "public", "javascript")))
-// app.use(express.static(path.join(__dirname, "public", "html", "static")))
+app.use(express.static(path.join(__dirname, "public", "images")))
+app.use(express.static(path.join(__dirname, "public", "html", "games")))
 
 app.use(express.urlencoded({extended:true}))
 app.use(middlewares.validateFields);//Check if there are enough fields in the body
