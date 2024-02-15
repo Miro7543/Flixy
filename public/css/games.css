@@ -8,12 +8,15 @@ div.overlay>label.big{
     transition: font-size ease-in 0.01s;
     font-size : 30vw;
 }
-div.overlay>label.big-anim{
-    font-size : 30vw;
-    transition: font-size ease-in 0.6s;
-
+div.overlay>label.medium{
+    font-size : 10vw;
 }
 
+div.overlay>label.subtitle{
+    font-size : 2rem;
+    max-width: 40vw;
+    color: rgb(164, 163, 163);
+}
 
 div.overlay{
     width : 100vw;
@@ -23,6 +26,7 @@ div.overlay{
     left : 0;
     top : 0;
     display : flex;
+    flex-direction: column;
     align-items : center;
     justify-content : center;
 }

@@ -66,7 +66,7 @@ module.exports ={
         io.on("connection",(socket)=>{
             socket.token = getToken(socket);//gets the token 
             socket.url = new URL(socket.handshake.headers.referer).pathname;//gets the pathname
-            
+
             auth.getData(socket.token)
             .then(data=>{
                 if(!data){

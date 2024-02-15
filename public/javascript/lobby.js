@@ -6,7 +6,7 @@ function startCountdown(){
     
     div.appendChild(label);
     document.body.appendChild(div);
-    countdown(div,label,5);
+    countdown(div,label,3);
 }
 
 
@@ -40,7 +40,6 @@ function startClock(clock,time,maxTime){
     clock.innerHTML = timeToString(Math.min(time,maxTime));
     if(time==0)    
         return;
-    
     setTimeout(()=>{
         startClock(clock,time-1,maxTime);
     },1000)   
@@ -89,3 +88,26 @@ socket.on("get-script",({url})=>{
 })
 
 
+function displayOverlay(text,message=null,expiration = 6,size = null){
+    const div = document.createElement("div")
+    div.classList.add("overlay");
+    
+    const label = document.createElement("label")
+    label.innerHTML = text;
+    if(size)
+        label.classList.add(size);
+    div.appendChild(label)
+
+    if(message){
+        const message = document.createElement("label")
+        message.innerHTML = message;
+        message.classList.add("subtitle");
+        div.appendChild(message)
+    }
+
+    
+    document.body.appendChild(div);
+    setTimeout(()=>{
+        document.body.removeChild(div);
+    },expiration*1000);
+}

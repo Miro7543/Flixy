@@ -7,6 +7,7 @@ const games = require("../games.json");
 const { createReadStream } = require("fs");
 const moduleMap = {
     "tic-tac-toe" : require("./games/TTT"),
+    "bulls-and-cows" : require("./games/bulls-and-cows"),
     "sudoku" : require("./games/sudoku")
 }
 function validateCode(code){
@@ -58,13 +59,9 @@ router.post("/create", (req,res)=>{
 })
 
 router.get("/game.js",(req,res)=>{
-    console.log(req.user.sessionid)
     db.query("Select game from lobby_players where sessionid = $1 and status = 'in lobby'", [req.user.sessionid])
     .then(data=>{
-        // console.log(data.rows);
         if(data.rowCount){
-            // console.log(path.join(__dirname, "../", "public", "javascript", data.rows[0].game + ".js"));
-            // C:\Users\Miro\Programming\Advanced_JS_Project\public\javascript\tic-tac-toe.js
             res.setHeader("Content-Type", "application/javascript")
             res.sendFile(path.join(__dirname, "../", "public", "javascript", data.rows[0].game + ".js"));
             res.end()
@@ -152,10 +149,7 @@ function messageCreated(socket,io,code){
     if(!socket?.user?.username)socket.emit("redirect","/");
     socket.ON("message",(message)=>{
         const socketsInRoom = io.sockets.in(code).adapter.sids;
-        // console.log(socket.id)
-        // console.log(socketsInRoom)
         for (const socketId of socketsInRoom) {
-            // console.log(socketId[0])
             io.sockets.sockets.get(socketId[0]).emit(
                 "newMessage",
                 message,
@@ -189,6 +183,7 @@ function startingGame(socket,io,code){
         })
         .then(data=>{
             if(data){
+                console.log(data);
                 io.to(code).emit("GameStarted",{game:data,code});
                 moduleMap[data].startGame(socket,io,code);
             }
@@ -207,6 +202,7 @@ function getGame(sessionid){
         else return;
     })
 }
+
 
 function requestScript(socket,code){
     db.query("Select game from lobbies where code = $1 ",[code])

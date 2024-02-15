@@ -86,6 +86,7 @@ div.segment{
 div.segment{
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center center;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -95,6 +96,9 @@ div.segment{
 }
 div.segment.bulls-and-cows{
     background-image: url("./bulls-and-cows.jpg");
+}
+div.segment.landing-page{
+    background-image: url("./LandingPage.jpg");
 }
 
 div.lobbyCont{

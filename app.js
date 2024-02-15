@@ -15,11 +15,15 @@ const sockets = require("./modules/sockets.js");
 const auth = require("./modules/auth.js");
 const lobbiesRouter=require("./modules/lobbies.js").router;
 const tttRouter=require("./modules/games/TTT.js").router;
+const bacRouter=require("./modules/games/bulls-and-cows.js").router;
 
 sockets.init(server);
 require("dotenv").config()
 
-app.use((req,res,next)=>{console.log(req.url);next()})
+app.use((req,res,next)=>{
+    //console.log(req.url);
+    next()
+})
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public", "css"))) 
@@ -39,6 +43,7 @@ app.use(pages.staticHTMLS)//Return static htmls (login, register ...)
 app.use(accountsRouter.router);
 app.use("/lobby",lobbiesRouter)
 app.use("/tic-tac-toe",tttRouter)
+app.use("/bulls-and-cows",bacRouter);
 
 app.get("/",(req,res)=>{
     let header=`

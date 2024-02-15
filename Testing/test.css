@@ -43,66 +43,65 @@ div.board{
     padding-top: 0;
 }
 
-div.content{
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 30px;
+div.sudokuCont{
     flex: 1;
+    justify-content: space-around;
 }
 
-div.guessesCont{
-    flex: 1;
-    background-color: rgb(197, 166, 224);
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 15px;
-    gap:15px
-}
-label.title{
-    font-size: 1.7rem;
-    text-align: center;
+div.numbers{
+    gap: 10px;
 }
 
-div.guesses{
-    flex: 1;
-    display: flex;
+div.numbersCol{
     flex-direction: column;
-    background-color:  rgb(172, 145, 197);
+    height: 100%;
+    gap: 10px;
+    border: 1px solid #444;
+}
+div.number{
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    font-size: 1.5rem;
+    background-color: blueviolet;
+}
+
+table{
+    border-spacing: 0;
+}
+
+table.sudoku{
+    background-color: aqua;
+    height: 100%;
+    aspect-ratio: 1/1;
+    /* row-gap: 0; */
+}
+table.tr{
+    column-gap: 0;
+}
+td.square{
+    background-color: rgb(28, 200, 200);
+    border: 2px solid black;
+}
+table table{
+    width: 100%;
+    height: 100%;
+}
+td.cell{
+    border: 1px solid rgb(63, 63, 63);
+
 }
 
 label.clock{
     font-size: 4rem;
     margin: 30px;
-    text-align: center;
 }
-
-form.guessForm{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 15px;
+label.difficulty{
+    font-size: 3rem;
 }
-
-div.submitionCont{
-    flex: 1;
-    /* background-color: aqua; */
-    display: flex;
+div.Info{
     align-items: center;
-    justify-content: center;
-}
-
-form *{
-    font-size: 1.3rem;
-}
-form.submitForm{
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 60px;
-    background-color: aquamarine;
-}
-form.submitForm *{
-    font-size: 2rem;
+    justify-content: space-between;
+    padding: 0 50px;
 }

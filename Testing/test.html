@@ -12,38 +12,248 @@
 <body>
     <div class="viewport">
 
-        <div class="playerCont player2">
+        <div class="playerCont player1">
             <img src="" alt="">
             <label for="">$player1$</label>
         </div>
         <div class="board">
-            <label class="clock">01:00</label>
-            
-            <div class="content">
-                <div class="submitionCont">
+            <div class="votingCont">
+                <label>Vote for difficulty</label>
+                <button class="difficultyBtn">Easy</button>
+                <button class="difficultyBtn">Medium</button>
+                <button class="difficultyBtn">Hard</button>
+                <button class="difficultyBtn">Expert</button>
 
-                    <form class="submitForm">    
-                        <label>Please enter your number</label>
-                        <input type="text" pattern="(?=[0-9]{4})(?!.*(.).*\1)" title="Please enter a 4 digit number with different digits." maxlength="4" placeholder="Enter your number">
-                        <button type="submit">Submit number</button>
-                    </form>
+            </div>
+            <!--
+
+            <div class="Info">
+                <label class="difficulty">Difficulty: Easy</label>
+                <label class="clock">00:00</label>
+            </div>
+            <div class="sudokuCont">
+                <div class="numbers">
+                    <div class="numbersCol">
+                        <div class="number">1</div>
+                        <div class="number">2</div>
+                        <div class="number">3</div>
+                        <div class="number">4</div>
+                        <div class="number">5</div>
+                    </div>
+                    <div class="numbersCol">
+                        <div class="number">6</div>
+                        <div class="number">7</div>
+                        <div class="number">8</div>
+                        <div class="number">9</div>
+                        <div class="number"></div>
+                    </div>
                 </div>
-                <!-- <div class="guessesCont">
-                    <label class="title">Guesses</label>
-                    <div class="guesses"></div>
-                    <form class="guessForm">
-                        <input type="text" pattern="(?=[0-9]{4})(?!.*(.).*\1)" title="Please enter a 4 digit number with different digits." maxlength="4" placeholder="Enter your guess">
-                        <button type="submit">Guess</button>
-                    </form>
-                </div>
-                <div class="guessesCont">
-                    <label class="title">Oponent's guesses</label>
-                    <div class="guesses"></div>
-                </div>
-                -->
-            </div> 
+            <table class="sudoku">
+                <tbody>
+                    <tr class="row-squares">
+                        <td class="square1 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="square2 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="square3 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="row-squares">
+                        <td class="square4 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="square5 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="square6 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        
+                    </tr>
+                    <tr class="row-squares">
+                        <td class="square7 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="square8 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td class="square9 square">
+                            <table>
+                                <tbody>
+                                    <tr class="row-cells">
+                                        <td class="cell1 cell"></td>
+                                        <td class="cell2 cell"></td>
+                                        <td class="cell3 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell4 cell"></td>
+                                        <td class="cell5 cell"></td>
+                                        <td class="cell6 cell"></td>
+                                    </tr>
+                                    <tr class="row-cells">
+                                        <td class="cell7 cell"></td>
+                                        <td class="cell8 cell"></td>
+                                        <td class="cell9 cell"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            
         </div>
-        <div class="playerCont player1">
+    -->
+        </div>
+        <div class="playerCont player2">
             <img src="" alt="">
             <label for="">$player2$</label>
         </div>

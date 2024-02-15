@@ -58,7 +58,7 @@ function selectButton(){
 }
 
 function addClickListeners(){
-    for(let i=0;i<6;i++){
+    for(let i=0;i<5;i++){
         links[i].addEventListener("click",()=>{
             let href=links[i].attributes.getNamedItem("href");
             location.hash = href;

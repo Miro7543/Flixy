@@ -9,6 +9,11 @@ label.countdown.big{
     font-size : 30vw;
 }
 
+div.overlay>label.subtitle{
+    font-size : 2rem;
+    max-width: 40vw;
+    color: rgb(164, 163, 163);
+}
 
 div.overlay{
     width : 100vw;

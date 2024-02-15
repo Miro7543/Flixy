@@ -31,15 +31,7 @@ socket.on("error",(err)=>{
     // socket.emit("get-info",)
 // }
 // getInfo();
-function displayOverlay(text){
-    const div = document.createElement("div")
-    div.classList.add("overlay");
-    const label = document.createElement("label")
-    label.innerHTML = text;
-    div.appendChild(label)
-    document.body.appendChild(div);
-    div.classList.add("big-anim");
-}
+
 
 
 socket.on("win",(pos,table)=>{

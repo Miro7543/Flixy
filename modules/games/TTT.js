@@ -4,6 +4,7 @@ const redis = require("../redis");
 const pages = require("../pages");
 const fs = require("fs");
 const path = require("path");
+const lobbies = require("../games")
 
 function TTT(room,socket1,socket2){
     this.player1 = socket1;
@@ -68,19 +69,9 @@ function TTT(room,socket1,socket2){
 
 } 
 
-function getRoomInfo(req,res){
-    const code = req.params.code;
-    return db.query("Select * from lobby_players where code = $1 order by datecreated",[code])
-    .then(data=>{
-        if(data.rowCount){
-            return data;
-        }
-        else return; 
-    })
-}
 
 function renderPage(req,res){
-    getRoomInfo(req,res)
+    lobbies.getRoomInfo(req)
     .then(data=>{
         if(!data){
             res.redirect("/");
@@ -97,10 +88,7 @@ function renderPage(req,res){
 }
 
 router.get("/:code",(req,res)=>{
-    // console.log(req.params)
-    
     renderPage(req,res)
-
 })
 
 function startGame(socket,io,code){
@@ -110,7 +98,6 @@ function startGame(socket,io,code){
         Promise.all(socketids)
         .then(socketids=>{
             const sockets = socketids.map(socketid=>io.sockets.sockets.get(socketid));
-            console.log(sockets);
             const game = new TTT(io.in(code),...sockets)
         })
     })
