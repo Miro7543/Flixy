@@ -95,10 +95,16 @@ div.segment{
     box-sizing: border-box;
 }
 div.segment.bulls-and-cows{
-    background-image: url("./bulls-and-cows.jpg");
+    background-image: url("./bulls-and-cowsBanner.jpg");
+}
+div.segment.sudoku{
+    background-image: url("./sudokuBanner.png");
+}
+div.segment.tic-tac-toe{
+    background-image: url("./tic-tac-toeBanner.png");
 }
 div.segment.landing-page{
-    background-image: url("./LandingPage.jpg");
+    background-image: url("./LandingPageBanner.jpg");
 }
 
 div.lobbyCont{
