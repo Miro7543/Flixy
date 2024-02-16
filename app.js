@@ -15,6 +15,7 @@ const sockets = require("./modules/sockets.js");
 const auth = require("./modules/auth.js");
 const lobbiesRouter=require("./modules/lobbies.js").router;
 const tttRouter=require("./modules/games/TTT.js").router;
+const sudokuRouter=require("./modules/games/sudoku.js").router;
 const bacRouter=require("./modules/games/bulls-and-cows.js").router;
 
 sockets.init(server);
@@ -43,6 +44,7 @@ app.use(pages.staticHTMLS)//Return static htmls (login, register ...)
 app.use(accountsRouter.router);
 app.use("/lobby",lobbiesRouter)
 app.use("/tic-tac-toe",tttRouter)
+app.use("/sudoku",sudokuRouter)
 app.use("/bulls-and-cows",bacRouter);
 
 app.get("/",(req,res)=>{
@@ -55,13 +57,13 @@ app.get("/",(req,res)=>{
     </a>`;
     if(req.user !== undefined){
         header=`
-        <a href="/profile">
+        <h1 class="greeting">
             Hello ${req.user.username}!
-        </a>
+        </h1>
         <a href="/logout">
             <img src="logout.svg" class="logoutIcon"></svg>
         </a>
-    `
+        `
     }
     const readStream=new fs.createReadStream(path.join(__dirname,"public", "html", "index.html"),{encoding:"utf8"});
     const transformer=pages.replaceInStream({header});

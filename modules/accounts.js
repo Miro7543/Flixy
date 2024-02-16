@@ -140,22 +140,6 @@ router.get("/logout",(req,res)=>{
     endSession(req,res);
 })
 
-router.get("/profile",(req,res)=>{
-    const reader=createReadStream("./public/html/profile.html");
-    db.query("Select * from users where sessionid = $1",[req.user.sessionid])
-    .then(data=>{
-        if(!data.rowCount){
-            //Message - profile not found
-            res.redirect("/");
-        }
-        else {
-            reader.pipe(pages.replaceInStream(data.rows[0])).pipe(res);
-        }
-    })
-})
-
-
-
 module.exports={
     router
 };

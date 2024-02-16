@@ -32,11 +32,19 @@ div.header{
     padding-right: 30px;
     box-sizing: border-box;
 }
+div.header>div{
+    display: flex;
+    align-items: center;
+}
 div.header>div>*{
     margin-left: 30px;
 }
 .header h1{
-    color: var(--darker-accent)
+    /* color: var(--darker-accent) */
+    color: white;
+}
+.header .greeting{
+    font-size: 1.7rem;
 }
 
 div.segment{

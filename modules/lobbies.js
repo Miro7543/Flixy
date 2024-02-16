@@ -209,7 +209,9 @@ function requestScript(socket,code){
     .then(data=>{
         if(!data.rowCount){
             //message - Server error
+            return;
         }
+        console.log(data.rows[0].game);
         socket.emit("get-script", {url: `${data.rows[0].game}.js`})
     })
 }

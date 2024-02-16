@@ -3,7 +3,12 @@
         "minPlayers":2,
         "maxPlayers":4
     },
-    "tic-tac-toe":{},
-    "bulls-and-cows":{},
-    "battleships":{}
+    "tic-tac-toe":{
+        "minPlayers":2,
+        "maxPlayers":2
+    },
+    "bulls-and-cows":{
+        "minPlayers":2,
+        "maxPlayers":2
+    }
 }
