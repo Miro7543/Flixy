@@ -111,3 +111,8 @@ function displayOverlay(text,message=null,expiration = 6,size = null){
         document.body.removeChild(div);
     },expiration*1000);
 }
+
+socket.on("error",(err)=>{
+    console.log(err);
+    ShowError(err);
+})

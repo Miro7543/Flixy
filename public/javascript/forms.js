@@ -5,18 +5,25 @@ document.addEventListener("DOMContentLoaded",()=>{
         form.addEventListener("submit",(event)=>{
             event.preventDefault();
             fetch(form.action,{
-                met
+                method:"POST",
+                body:JSON.stringify(formDataToObj(form))
             })
+            .then(handleResponse)
         })
     })
-    const createForms = document.querySelectorAll(".join-lobby-form");
+    const createForms = document.querySelectorAll("form.create-lobby-form");
     createForms.forEach(form=>{
-        form.addEventListener("submit",(event)=>{
-            event.preventDefault();
-            fetch(form.action,{
-                met
-            })
+        console.log(form)
+        form.addEventListener("formdata",(event)=>{
+            event.formData.append("socketid",socket.id)
         })
     })
 
 })
+
+function formDataToObj(form){
+    const formDataObject = {};
+    for (const [key, value] of form.entries()) {
+        formDataObject[key] = value;
+    }
+}

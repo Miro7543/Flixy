@@ -38,11 +38,13 @@ div.header>div{
 }
 div.header>div>*{
     margin-left: 30px;
-}
-.header h1{
-    /* color: var(--darker-accent) */
     color: white;
 }
+div.header>div>a:hover{
+    color: rgb(175, 175, 175);
+    cursor: pointer;
+}
+
 .header .greeting{
     font-size: 1.7rem;
 }

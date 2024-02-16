@@ -22,4 +22,16 @@ socket.on("logout",()=>{
     window.location.href="/logout";
 })
 
+socket.on("notification",({text})=>{
+    ShowMessage(text);
+})
 
+socket.on("error",({text})=>{
+    ShowError(text);
+})
+
+socket.on("notifyLater",(text,error,cb)=>{
+    sessionStorage.setItem(error?"error":"message",text);
+    console.log(cb.toString())
+    cb();
+})

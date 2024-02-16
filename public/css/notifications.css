@@ -1,8 +1,12 @@
+div.viewport{
+    position: relative;
+}
 #toast {
     color: #fff;
     position: fixed;
-    bottom: -120px;
-    z-index: 10;
+    bottom: 50px;
+    font-size: 1.5rem;
+    z-index: 1000;
     left: 50%;
     transform: translateX(-50%);
     background-color: #333;

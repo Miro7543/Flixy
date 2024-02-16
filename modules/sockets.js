@@ -66,13 +66,10 @@ module.exports ={
         io.on("connection",(socket)=>{
             socket.token = getToken(socket);//gets the token 
             socket.url = new URL(socket.handshake.headers.referer).pathname;//gets the pathname
-
             auth.getData(socket.token)
             .then(data=>{
-                if(!data){
-                    socket.emit("redirect", {url:"/"})
-                }
-                else{
+                if(data)
+                {
                     socket.user = data;
                     redis.set("sid-socketid:" + data.sessionid, socket.id)
                     .then(()=>{
@@ -82,12 +79,6 @@ module.exports ={
                 } 
             })
             
-
-            // socket.on("disconnect",(data)=>{
-            //     if(socket.user){
-            //         redis.del("sid-socketid:" + socket.user.sessionid)
-            //     }
-            // })
         })
     },
     logoutLastInstance:function(sessionid){
@@ -100,6 +91,21 @@ module.exports ={
                 }
             }
         })
+    },
+    notification:function (text,socketid,error,later=false,cb=undefined){
+        if(!socketid)return;
+        const target = io.sockets.sockets.get(socketid);
+        if(!target)return;
+        if(error)target.emit("error",{text});
+        else target.emit("notification",{text});
+    },
+    notifyLater:function(text,socketid,error,cb){
+        if(!socketid)return;
+        const target = io.sockets.sockets.get(socketid);
+        if(!target)return;
+        if(error)target.emit("notifyLater",text,error,cb);
+        else target.emit("notifyLater",text,error,cb);
+
     },
     disconnectFromRoom:function(userid, lobbyid){
 

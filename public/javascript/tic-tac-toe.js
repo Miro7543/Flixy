@@ -6,7 +6,7 @@ socket.on("GameStarted",(data)=>{
         }
     })
     .then(data=>{
-        document.body.innerHTML=data;
+        document.documentElement.innerHTML = data;
         startCountdown();
         const clockLabel = document.querySelector("label.clock");
         startClock(clockLabel,63,60);
@@ -22,17 +22,6 @@ function addCellListeners(){
         })
     })
 }
-
-socket.on("error",(err)=>{
-    console.log(err);
-})
-
-// function getInfo(){
-    // socket.emit("get-info",)
-// }
-// getInfo();
-
-
 
 socket.on("win",(pos,table)=>{
     pos.forEach(position=>{

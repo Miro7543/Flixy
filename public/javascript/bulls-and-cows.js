@@ -106,5 +106,5 @@ socket.on("lastChance",(self)=>{
 
 
 socket.on("error",(err)=>{
-    console.log(err);
+    ShowError(err);
 })

@@ -6,7 +6,6 @@ const server = createServer(app);
 const fs=require("fs");
 const path=require("path");
 
-const db= require("./modules/db.js");
 const pages=require("./modules/pages.js");
 const middlewares=require("./modules/middlewares.js");
 const accountsRouter=require("./modules/accounts.js");
@@ -19,10 +18,10 @@ const sudokuRouter=require("./modules/games/sudoku.js").router;
 const bacRouter=require("./modules/games/bulls-and-cows.js").router;
 
 sockets.init(server);
-require("dotenv").config()
+require("dotenv").config();
 
 app.use((req,res,next)=>{
-    //console.log(req.url);
+    console.log(req.url);
     next()
 })
 
@@ -34,9 +33,9 @@ app.use(express.static(path.join(__dirname, "public", "images")))
 app.use(express.static(path.join(__dirname, "public", "html", "games")))
 
 app.use(express.urlencoded({extended:true}))
+app.use(auth.authenticate);//Deals with sessions, tokens, etc. 
+app.use(middlewares.checkSessionRequirement);//Checks if the user passes the session requirements
 app.use(middlewares.validateFields);//Check if there are enough fields in the body
-app.use(auth.authenticate);
-app.use(middlewares.checkSessionRequirement);
 
 app.use(pages.staticHTMLS)//Return static htmls (login, register ...)
 
@@ -47,7 +46,8 @@ app.use("/tic-tac-toe",tttRouter)
 app.use("/sudoku",sudokuRouter)
 app.use("/bulls-and-cows",bacRouter);
 
-app.get("/",(req,res)=>{
+
+app.get("/",(req,res)=>{//return landing page
     let header=`
     <a href="/login">
     Login
@@ -70,7 +70,7 @@ app.get("/",(req,res)=>{
     readStream.pipe(transformer).pipe(res);
 })
 
-app.post("/settoken",auth.setToken)
+app.post("/settoken",auth.setToken)//Update token request is made from socket 
 
 server.listen(process.env.PORT,()=>{
     console.log(`\x1b[34mServer running on ${process.env.PORT}\x1b[37m`)

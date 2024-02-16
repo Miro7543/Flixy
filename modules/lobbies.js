@@ -2,6 +2,7 @@ const router = require("express").Router();
 const db = require("./db");
 const path = require("path");
 const redis = require("./redis");
+const sockets = require("./sockets");
 const pages = require("./pages");
 const games = require("../games.json");
 const { createReadStream } = require("fs");
@@ -47,15 +48,18 @@ router.post("/join", (req,res)=>{
 })
 
 router.post("/create", (req,res)=>{
+    console.log(req.body)
     if(!req.body || !Object.keys(games).includes(req.body.game)){
-        //message => Server error
-        res.redirect(req.url);
+        res.status(500);
+        res.end();
         return;
     }
     db.query("Insert into lobbies(game) values ($1) returning code;",[req.body.game])
     .then(data=>{
         res.redirect("/lobby/"+data.rows[0].code);
+        res.end();
     })
+    .catch(err=>{res.status(500);res.end(0)});
 })
 
 router.get("/game.js",(req,res)=>{
@@ -77,6 +81,8 @@ router.get("/:code", (req,res)=>{
     req.params.code=req.params.code.toUpperCase();
     
     if(!validateCode(req.params.code)){
+        // if(req.params.socketid)
+            // sockets.notification("Invalid code","" )
         //Message - Invalid code
         return res.redirect("/");
     }

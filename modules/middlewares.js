@@ -1,15 +1,18 @@
 const requiredFields=require("../requiredFields.json");
 const db=require("./db")
+const sockets=require("./sockets")
 
 
 module.exports={
     validateFields:function (req, res, next){
+        console.log("validation")
         let fieldsForReq = requiredFields?.[req.method]?.[req.url.slice(1)]?.fields;
         if(fieldsForReq === undefined)return next();
 
         if(!fieldsForReq.every(field => req.body[field]!==undefined)){
-            res.status(500).redirect(req.url);
-            //message
+            res.status(500);
+            sockets.notification("Server error",req.body.socketid,true);
+            
         }
         else next();
     },
@@ -22,11 +25,12 @@ module.exports={
             if( hasSession !== needsSession){
                 if(hasSession){
                     res.redirect("/"); 
-                    //message (Has session but needs to be logged out)
                 }
                 else{
-                    res.redirect("/login");
-                    //message (Doesn't have session but needs to be logged in)
+                    console.log(req.body)
+                    sockets.notifyLater("You have to be logged in to continue",req?.body?.socketid, true,()=>{
+                        res.redirect("/login");
+                    });
                 }
             }
             else {

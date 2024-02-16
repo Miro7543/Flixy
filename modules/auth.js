@@ -22,18 +22,17 @@ module.exports = {
     authenticate: function (req, res, next){
         const token = req.cookies.token;
         if (!token) return next();
-    
+        
         const user = module.exports.isValid(token);
         if (!user)next();
     
         const { exp } = user;
         if(isAboutToExpire(exp)){
             const newToken=refreshToken(user);
-            res.cookie("token",newToken,{ maxAge:60*1000*settings.sessionTime})
+            res.cookie("token",newToken,{ maxAge:60*1000*settings.sessionTime,httpOnly:true})
             redis.expire("sid-id:" + user.sessionid,60*settings.sessionTime);
         }
         req.user = user;
-        
         
         module.exports.addIdToUser(req.user)
         .then(()=>{next()})
@@ -67,7 +66,7 @@ module.exports = {
     },
     setToken:function(req,res){
         if(module.exports.isValid(req.body.token)){
-            res.cookie("token",req.body.token);
+            res.cookie("token",req.body.token,{maxAge:settings.sessionTime*60*1000, httpOnly:true});
         }
         else res.end();
     },

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-const { createReadStream } = require("fs");
-const pages=require("./pages");
+// const { createReadStream } = require("fs");
+// const pages=require("./pages");
 const db=require("./db");
 const redis=require("./redis");
 const crypto=require("crypto");
@@ -11,7 +11,7 @@ const settings = require("../settings.json")
 const numberExp=new RegExp(/[0-9]/,"g")
 const letterExp=new RegExp(/[a-z]/,"g")
 const capLetterExp=new RegExp(/[A-Z]/,"g")
-const specialSymbolExp=new RegExp(/[-\.\_\>\<\?\+\*\/\#\@\!\&\\]/,"g");
+// const specialSymbolExp=new RegExp(/[-\.\_\>\<\?\+\*\/\#\@\!\&\\]/,"g");
 
 function generateCode(length) {
     const randomBytes = crypto.randomBytes(Math.ceil(length / 2));
@@ -26,10 +26,10 @@ function hashString(pass,salt){
 
 function validatePassword(pass, passConf){
     if(pass !== passConf)return {valid:false,reason:"Passwords must match"};
-    // if(!numberExp.test(pass))return {valid:false,reason:"Password must contain a number"};
-    // if(!letterExp.test(pass))return {valid:false,reason:"Password must contain a lowercase letter"};
-    // if(!capLetterExp.test(pass))return {valid:false,reason:"Password must contain an uppercase letter"};
-    // if(pass.length<8)return {valid:false,reason:"Password must be at least 8 characters long"};
+    if(!numberExp.test(pass))return {valid:false,reason:"Password must contain a number"};
+    if(!letterExp.test(pass))return {valid:false,reason:"Password must contain a lowercase letter"};
+    if(!capLetterExp.test(pass))return {valid:false,reason:"Password must contain an uppercase letter"};
+    if(pass.length<8)return {valid:false,reason:"Password must be at least 8 characters long"};
     return {valid:true, reason:null};
 }
 
@@ -74,7 +74,7 @@ function startSession(user, res){
             username : data?.rows[0]?.username
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${settings.sessionTime}m`}); 
-        res.cookie("token", token, { maxAge:60*1000*settings.sessionTime});
+        res.cookie("token", token, { maxAge:60*1000*settings.sessionTime,httpOnly:true});
         return data.rows[0].sessionid;
     })
     .then((sessionid)=>{
@@ -83,7 +83,7 @@ function startSession(user, res){
 }
 
 function endSession(req, res, cb){
-    res.cookie("token", null, { maxAge:0});
+    res.cookie("token", null, { maxAge:0,httpOnly:true});
     redis.del("sid-id:" + req?.user?.sessionid, req?.user?.id)
     res.redirect('/');
 }
@@ -96,10 +96,8 @@ router.post("/login",(req,res)=>{
             return startSession(user,res)
         })
         .then(()=>res.redirect("/"));
-
     })
     .catch(err=>{
-            console.error(err);
             res.redirect("/login");
             //Message
 

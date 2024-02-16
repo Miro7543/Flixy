@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="variables.css">
     <link rel="stylesheet" href="sidelinks.css">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="handler.js"></script>
+    <script defer src="forms.js"></script>
     <script defer src="scrolling.js"></script>
-    <!-- <script defer src="sockets.js"></script> -->
+    <script defer src="sockets.js"></script>
 </head>
 <body>
     <div class="header">
@@ -47,6 +49,7 @@
             <div class = "lobbyCont"> 
                 <form action="lobby/join" class="join-lobby-form" method="post">
                     <input type="text" name="lobby_code" placeholder="Enter lobby code" pattern="^[A-Z,a-z]{4}$" title="Please enter exactly 4 letters" required>
+                    <input type="hidden" name="game" value="tic-tac-toe">
                     <button id="JoinTTT" type="submit">Join lobby</button>
                 </form>
                 <form action="/lobby/create" class="create-lobby-form" method="post">
@@ -61,6 +64,7 @@
             <div class = "lobbyCont"> 
                 <form action="lobby/join" class="join-lobby-form" method="post">
                     <input type="text" name="lobby_code" placeholder="Enter lobby code" pattern="^[A-Z,a-z]{4}$" title="Please enter exactly 4 letters" required>
+                    <input type="hidden" name="game" value="bulls-and-cows">
                     <button id="JoinTTT" type="submit">Join lobby</button>
                 </form>
                 <form action="/lobby/create" class="create-lobby-form" method="post">
@@ -75,6 +79,7 @@
             <div class = "lobbyCont"> 
                 <form action="lobby/join" class="join-lobby-form" method="post">
                     <input type="text" name="lobby_code" placeholder="Enter lobby code" pattern="^[A-Z,a-z]{4}$" title="Please enter exactly 4 letters" required>
+                    <input type="hidden" name="game" value="sudoku">
                     <button id="JoinTTT" type="submit">Join lobby</button>
                 </form>
                 <form action="/lobby/create" class="create-lobby-form" method="post">
@@ -92,7 +97,7 @@
         </div>
         
     </div>
-    <div id="toast"></div>
+
     <script src="notifications.js"></script>
     <link rel="stylesheet" href="notifications.css">
     

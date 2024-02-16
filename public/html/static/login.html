@@ -12,7 +12,8 @@
     </style>
     <link rel="stylesheet" href="formsStyle.css">
     <link rel="stylesheet" href="variables.css">
-    <!-- <script defer src="forms.js"></script> -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script defer src="sockets.js"></script>
 </head>
 <body>
     <form action="/login" method="POST">
@@ -29,5 +30,7 @@
         <label class="error-message"></label>
         <input type="submit" value="Login">
     </form>
+    <script src="notifications.js"></script>
+    <link rel="stylesheet" href="notifications.css">
 </body>
 </html>

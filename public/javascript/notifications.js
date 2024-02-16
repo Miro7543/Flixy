@@ -1,24 +1,35 @@
-const toast=document.getElementById("toast")
 let timeout;
+function createToast(){
+    let toast = document.createElement("div")
+    toast.id = "toast";
+    document.body.appendChild(toast)
+    return toast;
+}
 function ShowMessage(message=''){
+    if(document.getElementById("toast"))
+        document.getElementById("toast").remove();
+    if(timeout)clearTimeout(timeout)
+    const toast = createToast();
     toast.innerHTML=message;
     toast.classList.add('show');
     toast.classList.remove('error');
-    if(timeout)clearTimeout(timeout)
     timeout=setTimeout(() => {
         toast.classList.remove('show');
+        setTimeout(()=>{document.body.removeChild(toast)},300);
     }, 3000);
 }
 
 function ShowError(message=''){
+    if(document.getElementById("toast"))
+        document.getElementById("toast").remove();
+    if(timeout)clearTimeout(timeout)
+    toast = createToast();
     toast.innerHTML=message;
     toast.classList.add('error');
     toast.classList.add('show');
-    if(timeout)clearTimeout(timeout)
     timeout=setTimeout(() => {
         toast.classList.remove('show');
-
-        toast.classList.remove('error');
+        setTimeout(()=>{document.body.removeChild(toast)},300);
     }, 4000);
 }
 
