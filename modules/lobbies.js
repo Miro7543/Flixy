@@ -6,14 +6,22 @@ const sockets = require("./sockets");
 const pages = require("./pages");
 const games = require("../games.json");
 const { createReadStream } = require("fs");
+const gamesConfig = require("../games.json");
 const moduleMap = {
     "tic-tac-toe" : require("./games/TTT"),
     "bulls-and-cows" : require("./games/bulls-and-cows"),
     "sudoku" : require("./games/sudoku")
 }
+
+const nameMap = {
+    "tic-tac-toe": "Tic Tac Toe",
+    "bulls-and-cows": "Bulls and Cows",
+    "sudoku": "Sudoku"
+}
+
 function validateCode(code){
     const reg= new RegExp(/^[A-Z,a-z]{4}$/);
-    return reg.test(code)
+    return reg.test(code);
 }
 
 function renderLobbyPage(res,data){
@@ -44,7 +52,11 @@ function retrieveMessages(code,user){
 }
 
 router.post("/join", (req,res)=>{
-    res.redirect(`/lobby/${req?.body?.lobby_code || "0000"}`);
+    console.log(req.body)
+    validateLobby(req?.body?.lobby_code,false,req,res)
+    .then(()=>validateSpace(req.body.lobby_code,false,req,res))
+    .then(()=>{res.redirect(`/lobby/${req?.body?.lobby_code || "0000"}`)})
+    .catch(err=>{console.log(err)})
 })
 
 router.post("/create", (req,res)=>{
@@ -57,7 +69,6 @@ router.post("/create", (req,res)=>{
     db.query("Insert into lobbies(game) values ($1) returning code;",[req.body.game])
     .then(data=>{
         res.redirect("/lobby/"+data.rows[0].code);
-        res.end();
     })
     .catch(err=>{res.status(500);res.end(0)});
 })
@@ -74,29 +85,53 @@ router.get("/game.js",(req,res)=>{
     })
 })
 
+function validateSpace(code,redirect = true,req){
+    return db.query("Select count(*) from lobby_players where code = $1",[code])
+    .then(data1=>{
+        return db.query("select game from lobbies where code = $1",[code])
+        .then((data2)=>{
+            if(Number(data1.rows[0].count)>=gamesConfig[data2.rows[0].game].maxPlayers){
+                if(!redirect){
+                    sockets.notification("The lobby is full",req.body.socketid,true)
+                }
+                else res.redirect("/");
+                throw new Error("");
+            }
+            req.game = data2.rows[0].game;
+        })
+    })
+}
+
+function validateLobby(code,redirect=true,req,res){
+    return db.query("Select * from lobbies where code = $1",[code ])
+    .then(data=>{
+        if(!data.rowCount){
+            if(!redirect){
+                sockets.notification(`There is no lobby with code ${code} `,req.body.socketid,true)
+            }
+            else res.redirect("/");
+            throw new Error("");
+        }
+    })
+}
+
 router.get("/:code", (req,res)=>{
+    console.log(req.params);
     if(!req.params || !req.params.code)
     return res.redirect("/");
 
     req.params.code=req.params.code.toUpperCase();
     
     if(!validateCode(req.params.code)){
-        // if(req.params.socketid)
-            // sockets.notification("Invalid code","" )
-        //Message - Invalid code
+        sockets.notification("Invalid code",req?.body?.sockeid);
         return res.redirect("/");
     }
-    //Has space?
-    //Has lobby?
-    //Is the correct type of game
 
-    
-    retrieveMessages(req.params.code,req.user)
-    .then(data=>{
-        renderLobbyPage(res,{code:req.params.code,messages:data})
-    })
-
-    // joinLobby(req.params.code, req.user, req, res);
+    validateLobby(req.params.code,true,req)
+    .then(()=>validateSpace(req.params.code,true,req))
+    .then(()=>retrieveMessages(req.params.code,req.user))
+    .then((data)=>renderLobbyPage(res,{code:req.params.code,messages:data,game:nameMap[req.game]}))
+    .catch(err=>{console.error(err)})
 })
 
 router.post("/leave", (req,res)=>{

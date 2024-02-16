@@ -23,15 +23,16 @@ socket.on("logout",()=>{
 })
 
 socket.on("notification",({text})=>{
+    console.log(text);
     ShowMessage(text);
 })
 
 socket.on("error",({text})=>{
+    console.log(text);
     ShowError(text);
 })
 
 socket.on("notifyLater",(text,error,cb)=>{
     sessionStorage.setItem(error?"error":"message",text);
-    console.log(cb.toString())
     cb();
 })

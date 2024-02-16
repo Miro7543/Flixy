@@ -79,13 +79,11 @@ module.exports = {
             }
             else{
                 console.log("ID not found" );
+                
                 //Server error
             }
         })
     },
-    // saveSocket: (req, res, next) => {
-        // if (!req.user) return next();
-    // },
     isValid: function(token) {
         try {
             const user = jwt.verify(token, process.env.JWT_SECRET);

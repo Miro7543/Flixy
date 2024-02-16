@@ -1,5 +1,7 @@
 function handleResponse(data){
     console.log(data);
+    if(data.redirected)
+        window.location.href=data.url;
     switch(data.status){
         case 200:{
             if(data.headers.get('content-type')=="application/json")
@@ -7,7 +9,7 @@ function handleResponse(data){
             else return data.text();
         }break;
         case 302:{
-            
+
         }
         case 400:{
             ShowError(data.statusText);

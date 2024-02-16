@@ -8,9 +8,9 @@ const crypto=require("crypto");
 const sockets = require("./sockets");
 const settings = require("../settings.json")
 
-const numberExp=new RegExp(/[0-9]/,"g")
-const letterExp=new RegExp(/[a-z]/,"g")
-const capLetterExp=new RegExp(/[A-Z]/,"g")
+const numberExp=new RegExp(/.*[0-9].*/)
+const letterExp=new RegExp(/.*[a-z].*/)
+const capLetterExp=new RegExp(/.*[A-Z].*/)
 // const specialSymbolExp=new RegExp(/[-\.\_\>\<\?\+\*\/\#\@\!\&\\]/,"g");
 
 function generateCode(length) {
@@ -33,7 +33,7 @@ function validatePassword(pass, passConf){
     return {valid:true, reason:null};
 }
 
-function validateLoginInfo(loginInfo){
+function validateLoginInfo(loginInfo,req,res){
     return new Promise((resolve,reject)=>{
         db.query("Select salt from users where username=$1", [loginInfo.username])
         .then(data=>{
@@ -44,17 +44,21 @@ function validateLoginInfo(loginInfo){
                 ])
                 
             else{
-                reject(`No user found with username ${loginInfo.username}`, null)
-                throw new Error("The user was not found!")
+                // reject(`No user found with username ${loginInfo.username}`, null)
+                sockets.notification(`No user found with username ${loginInfo.username}`,req?.body?.socketid,true);
+
             }
         })
         .then(data=>{
             if(data.rowCount===1){
                 resolve(data.rows[0])
             }
-            else reject("Wrong password") 
+            else{
+                sockets.notification(`Wrong password`,req?.body?.socketid,true);
+                throw new Error("");
+            } 
         })
-        .catch(err=>reject(err))//Invalid username
+        .catch(err=>reject(err))
     })
 }
 
@@ -82,41 +86,61 @@ function startSession(user, res){
     })
 }
 
-function endSession(req, res, cb){
+function endSession(req, res){
     res.cookie("token", null, { maxAge:0,httpOnly:true});
-    redis.del("sid-id:" + req?.user?.sessionid, req?.user?.id)
-    res.redirect('/');
+    redis.del("sid-id:" + req?.user?.sessionid);
+    redis.get("sid-socketid:" + req?.user?.sessionid)
+    .then((data)=>{
+        if(data){
+            sockets.notifyLater("You have logged out successfully",data,false,()=>{        
+                res.redirect('/');
+                res.end();
+            });
+        }
+    })
+
 }
 
 router.post("/login",(req,res)=>{
-    validateLoginInfo(req.body)
+    console.log(req.body)
+    validateLoginInfo(req.body,req,res)
     .then(user=>{
         removePreviosSessions(req.body.username)
         .then(()=>{
-            return startSession(user,res)
+            return startSession(user,res);
         })
-        .then(()=>res.redirect("/"));
+        .then(()=>{
+            sockets.notifyLater("You have logged in successfully",req?.body?.socketid,false,()=>{
+                res.redirect("/")
+            });
+            
+        });
     })
     .catch(err=>{
-            res.redirect("/login");
-            //Message
-
+        if(err.message !="")
+            console.error(err);
+        // sockets.notification(err,req?.body?.socketid,true);
     });
 })
 
 router.post("/register",(req,res)=>{//username, email, password1, password2
     let passwordValidation=validatePassword(req.body.password1, req.body.password2);
     if(!passwordValidation.valid){
-        res.status(400).send(passwordValidation.reason);
+        // res.status(400).send(passwordValidation.reason);
+        sockets.notification(passwordValidation.reason,req?.body?.socketid,true);
         return;
     }
 
     const { password1,password2, ...user} = req.body;
     db.query("Select Count(*) from users where email=$1 or username = $2",[user.email,user.username])
+    .catch((err)=>{
+        console.error(err);
+        sockets.notification("Server error",req?.body?.socketid,true);
+    })
     .then((data)=>{
         if(+data.rows[0].count){
-            res.status(400).send("There already exists a user with this email or username")
-            throw new Error("Email or username already exists");
+            sockets.notification("There already exists a user with this email or username",req?.body?.socketid,true);
+            throw new Error("");
         }
         else{
             user.salt = generateCode(20);
@@ -127,11 +151,17 @@ router.post("/register",(req,res)=>{//username, email, password1, password2
                 user.salt,
                 user.email
             ])
-            .catch(err=>console.error("Error when creating a user"))
+            .catch(err=>{
+                sockets.notification("Server error",req?.body?.socketid,true);
+                console.error("Error when creating a user")
+            })
         } 
     })
-    .catch((err)=>{})
-    .then(()=>res.redirect('/'))//message    
+    .then(()=>{
+        res.redirect('/')
+        sockets.notifyLater("Account was successfully created!",req?.body?.socketid,false);
+
+    },()=>{})//message    
 })
 
 router.get("/logout",(req,res)=>{

@@ -6,12 +6,16 @@
     <title>Document</title>
     <link rel="stylesheet" href="formsStyle.css">
     <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="notifications.css">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="sockets.js"></script>
-    <!-- <script defer src="forms.js"></script> -->
+    <script defer src="notifications.js"></script>
+    <script defer src="forms.js"></script>
+    <script defer src="handler.js"></script>
+    
 </head>
 <body>
-    <form action="/register" method="POST">
+    <form action="/register" method="POST" class="register">
         <h1 class="logo">Flixy</h1>
         <h3>Register</h1>
         <div>
@@ -33,7 +37,5 @@
         <label class="error-message"></label>
         <input type="submit" value="Register">
     </form>
-    <script src="notifications.js"></script>
-    <link rel="stylesheet" href="notifications.css">
 </body>
 </html>
