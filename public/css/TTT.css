@@ -6,6 +6,7 @@ div.viewport{
     height: 100vh;
     width: 100vw;
     flex-direction: row;
+    background-color: #1f1f1f;
     justify-content: space-between;
     padding: 50px;
     box-sizing: border-box;
@@ -25,10 +26,12 @@ div.playerCont{
     justify-content: center;
     font-size: 2rem;
     font-weight: 400;
+    color: white;
+    background-color: #368bdf;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
 div.playerCont.onTurn{
-    background-color: rgb(221, 187, 134);
+    background-color: #2b6cae;
     font-size: 2.5rem;
     font-weight: 700;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
@@ -37,7 +40,7 @@ div.playerCont.onTurn{
 div.board{
     flex: 3;
     flex-direction: column;
-    background-color: rgb(164, 200, 200);
+    background-color:#368bdf;
     align-items: stretch;
     padding :50px;
     padding-top: 0;
@@ -62,16 +65,18 @@ tr{
     display: flex;
 }
 td{
-    background-color: rgb(135, 222, 215);
+    background-color: #195989;
     flex: 1;
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5vw;
+    font-size: 6vw;
+    font-family: 700;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
 td.winning{
-    background-color: rgb(72, 179, 72);
+    background-color: rgb(88, 177, 88);
 }
 td.losing{
     background-color: rgb(179, 72, 72);
@@ -80,7 +85,7 @@ td.losing{
 td:hover{
     cursor: pointer;
     font-size: 6vw;
-    background-color: rgb(120, 195, 188);
+    background-color: rgb(198, 129, 89);
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
 
@@ -88,4 +93,5 @@ label.clock{
     font-size: 4rem;
     margin: 30px;
     text-align: center;
+    color: white;
 }

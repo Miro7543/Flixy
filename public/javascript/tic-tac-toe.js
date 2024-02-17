@@ -6,6 +6,7 @@ socket.on("GameStarted",(data)=>{
         }
     })
     .then(data=>{
+        console.log("ok")
         document.documentElement.innerHTML = data;
         startCountdown();
         const clockLabel = document.querySelector("label.clock");

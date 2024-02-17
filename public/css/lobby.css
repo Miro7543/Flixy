@@ -4,12 +4,13 @@
 }
 body{
     display: flex;
+    background-color: #1F1F1F;
 }
 
 div.leftPanel{
     width: 80vw;
     height: 100vh;
-    background-color: aquamarine;
+    /* background-color: rgb(47, 47, 47); */
     display: flex;
     flex-direction: column;
 }
@@ -19,18 +20,45 @@ div.rigthPanel{
     max-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: rgb(223, 148, 255);
-}
-div.leftPanel div.buttonsCont button{
-    height: 50px;
-    margin: 30px auto;
-    padding: 20px;
+    background-color: var(--main-accent);
 }
 
 div.leftPanel>div.buttonsCont{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: end;
+    justify-content: center;
+    color: white;
+    position:relative;
+    padding-bottom: 20px;
+}
+button.startGameBtn{
+    background-color: rgb(108, 223, 106);
+    color: white;
+    padding: 25px;
+    font-size: 1.9rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in;
+}
+button.startGameBtn:hover{
+    background-color: rgb(87, 174, 86);
+    transition: background-color 0.1s ease-in;
+}
+button.leaveLobbyBtn{
+    background-color: rgb(215, 89, 89);
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    transition: background-color 0.1s ease-in;
+
+}
+button.leaveLobbyBtn:hover{
+    background-color: rgb(163, 68, 68);
+    transition: background-color 0.1s ease-in;
 }
 
 div.leftPanel>div>button:first-child{
@@ -44,17 +72,26 @@ div.leftPanel>div>button:first-child{
 
 div.playersCont{
     flex: 1;
-    background-color: rgb(99, 210, 173);
+    background-color: #1F1F1F;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
+
 div.playerCont{
     width: 20%;
     height: 80%;
-    background-color: rgb(79, 167, 138);
+    flex-direction: column;
+    background-color: #368bdf;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
 }
+
 
 div.infoCont{
     display: flex;
@@ -63,10 +100,13 @@ div.infoCont{
     padding: 20px;
     gap: 10px;
 }
+div.infoCont *{
+    color: white;
+}
 
 div.chatCont{
     padding: 20px;
-    background-color: rgb(194, 128, 222);
+    /* background-color: rgb(194, 128, 222); */
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -74,7 +114,8 @@ div.chatCont{
 }
 
 div.messagesCont{
-    background-color: rgb(166, 109, 190);
+    background-color: #368bdf;
+    border-radius: 40px;
     overflow: auto;
     padding: 10px;
     height: 80%;
@@ -95,6 +136,9 @@ div.messageForm{
 div.messageForm>input{
     flex: 1 1;
     min-width: 10px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: none;
 }
 div.messageCont.self{
     align-self: end;
@@ -122,5 +166,15 @@ label.message{
     color: white;
     width: min-content;
     padding: 10px;
+}
+
+button{
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+button:hover{
+    cursor: pointer;
 }
 

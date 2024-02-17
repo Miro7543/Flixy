@@ -5,6 +5,7 @@
 div.viewport{
     height: 100vh;
     width: 100vw;
+    background-color: #1f1f1f;
     flex-direction: row;
     justify-content: space-between;
     padding: 50px;
@@ -18,31 +19,35 @@ div{
 
 div.playersCont{
     flex: 1 1;
-    background-color: rgb(233, 214, 185);
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.6rem;
     gap: 30px;
     font-weight: 400;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
 div.player{
-    background-color: rgb(214, 197, 171);
+    background-color: #368bdf;
     flex: 1 1;
     flex-direction: column;
+    border-radius: 30px;
     align-items: center;
     justify-content: center;
+}
+div.player label{
+    color: white;
 }
 
 div.board{
     position: relative;
     flex: 3;
     flex-direction: column;
-    background-color: rgb(164, 200, 200);
+    background-color: #368bdf;
     align-items: stretch;
     padding :50px;
+    border-radius: 50px;
     padding-top: 0;
 }
 
@@ -56,22 +61,24 @@ div.numbers{
 }
 
 div.number.selected{
-    background-color: yellow;
+    background-color: rgb(22, 168, 71);
 }
 
 div.numbersCol{
     flex-direction: column;
     height: 100%;
     gap: 10px;
-    border: 1px solid #444;
 }
 div.number{
     flex: 1;
     align-items: center;
     justify-content: center;
     padding: 30px;
-    font-size: 1.8rem;
-    background-color: blueviolet;
+    font-size: 2rem;
+    font-weight: 600;
+    border-radius: 20px;
+    background-color: #195989;
+    color: white;
 }
 
 table{
@@ -81,7 +88,7 @@ table{
 }
 
 table.sudoku{
-    background-color: aqua;
+    background-color: #195989;
     height: 100%;
     aspect-ratio: 1/1;
     /* row-gap: 0; */
@@ -99,8 +106,8 @@ td{
     font-size: 1.4rem;
 }
 td.square{
-    background-color: rgb(28, 200, 200);
-    border: 2px solid black;
+    background-color: #195989;
+    border: 2px solid rgb(160, 191, 232);
 }
 table table{
     width: 100%;
@@ -114,7 +121,7 @@ tbody{
 }
 
 td.cell{
-    border: 1px solid rgb(63, 63, 63);
+    border: 1px solid rgb(44, 44, 44);
     width: 33.3333%;
 }
 
@@ -123,14 +130,14 @@ td.cell.given{
 }
 td.cell.not-given:hover{
     cursor: pointer;
-    background-color: #EEE;
+    background-color: #64647a;
     color: black;
 }
 td.cell.highlight{
-    background-color: rgb(0, 30, 255);
+    background-color: #16A847;
 }
 td.cell.invalid{
-    background-color: rgb(228, 86, 86);
+    background-color: rgb(176, 66, 66);
     color: white;
 }
 
@@ -143,12 +150,16 @@ label.difficulty{
 }
 div.Info{
     align-items: center;
-    justify-content: space-between;
-    padding: 0 50px;
+    justify-content: center;
+    padding: 30px;
+    font-weight: 600;
+    color: white;
+
 }
 
 div.votingCont{
-    display: flex;
+    /* display: flex; */
+    display: none;
     flex-direction: column;
     flex: 1;
     justify-content: center;
@@ -159,13 +170,15 @@ div.votingCont{
     height: 100%;
     left: 0;
     top: 0;
-    background-color: aquamarine;
+    border-radius: 50px;
+    background-color: #368bdf;
 }
 
 div.votingCont>label{
     text-align: center;
     font-size: 3rem;
     font-weight: 500;
+    color: white;
 }
 
 div.votingCont *{
@@ -174,4 +187,15 @@ div.votingCont *{
 div.votingCont button{
     font-size: 2.2rem;
     width: 20vw;
+    border: none;
+    border-radius: 40px;
+    transition: background-color 0.1s ease-in;
+    transition: font-size 0.1s ease-in;
+}
+div.votingCont button:hover{
+    background-color: #bfc5da;
+    font-size: 2.6rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in;
+    transition: font-size 0.1s ease-in;
 }

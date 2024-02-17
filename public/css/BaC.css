@@ -3,6 +3,7 @@
     padding: 0;
 }
 div.viewport{
+    background-color: #1f1f1f;
     height: 100vh;
     width: 100vw;
     flex-direction: row;
@@ -16,9 +17,14 @@ div{
     display: flex;
 }
 
+div.playerCont *{
+    color: white;
+}
+
 div.playerCont{
     flex: 1 1;
-    background-color: rgb(233, 214, 185);
+    background-color: #368bdf;
+    border-radius: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +34,7 @@ div.playerCont{
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
 }
 div.playerCont.onTurn{
-    background-color: rgb(221, 187, 134);
+    background-color: #2b6cae;
     font-size: 2.5rem;
     font-weight: 700;
     transition: background-color ease-in 0.1s,font-size ease-in 0.1s,font-weight, ease-in 0.1s;
@@ -37,7 +43,8 @@ div.playerCont.onTurn{
 div.board{
     flex: 3;
     flex-direction: column;
-    background-color: rgb(164, 200, 200);
+    background-color: #368bdf;
+    border-radius: 50px;
     align-items: stretch;
     padding :50px;
     padding-top: 0;
@@ -56,11 +63,12 @@ div.guess{
     justify-content: center;
     align-items: center;
     gap: 40px;
-    background-color: rgb(155, 126, 181)
+    background-color: rgb(171, 114, 62);
 }
 div.guess>label{
     display: flex;
     align-items: center;
+    color: white;
     gap: 10px;
 }
 
@@ -76,12 +84,16 @@ div.guess>label:nth-child(3)>img{
 
 div.guessesCont{
     flex: 1;
-    background-color: rgb(197, 166, 224);
+    background-color: rgb(204, 136, 74);
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     padding: 15px;
     gap:15px
+}
+div.guessesCont label{
+    color: white;
 }
 label.title{
     font-size: 1.7rem;
@@ -90,16 +102,17 @@ label.title{
 
 div.guesses{
     flex: 1 1 0;
+    background-color:  rgb(231, 171, 102);
     height: max-content;
     display: flex;
     flex-direction: column;
-    background-color:  rgb(172, 145, 197);
 }
 
 label.clock{
     font-size: 4rem;
     margin: 30px;
     text-align: center;
+    color: white;
 }
 
 form.guessForm{
@@ -107,6 +120,23 @@ form.guessForm{
     flex-direction: row;
     justify-content: center;
     gap: 15px;
+}
+form.guessForm button{
+    border-radius: 15px;
+    border: none;
+    padding: 15px;
+}
+form.guessForm input{
+    border: none;
+    border-radius: 15px;
+    padding-left: 8px;
+    background-color: rgb(231, 171, 102);
+    user-select: none;
+    color: white;
+}
+form.guessForm input::placeholder{
+    
+    color: white;
 }
 
 form.guessForm>label{
@@ -129,8 +159,32 @@ form.submitForm{
     flex-direction: column;
     gap: 40px;
     padding: 60px;
-    background-color: aquamarine;
+    background-color: #5ea0e2;
+    border-radius: 30px;
 }
 form.submitForm *{
     font-size: 2rem;
 }
+form.submitForm label{
+    color: white;
+}
+form.submitForm button{
+    background-color: #05af4f;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    transition: border-radius 0.2s,background-color 0.2s;
+
+}
+form.submitForm button:hover{
+    background-color: #0e9649;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: border-radius 0.2s,background-color 0.2s;
+}
+
+form.submitForm input{
+    border: none;
+    border-radius: 10px;
+}
+

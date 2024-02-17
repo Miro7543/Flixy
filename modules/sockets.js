@@ -71,6 +71,7 @@ module.exports ={
                 if(data)
                 {
                     socket.user = data;
+                    console.log(data.username, data.sessionid, socket.id)
                     redis.set("sid-socketid:" + data.sessionid, socket.id)
                     .then(()=>{
                         socket.ON = authenticater(socket);

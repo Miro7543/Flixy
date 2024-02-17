@@ -94,6 +94,7 @@ router.get("/:code",(req,res)=>{
 function startGame(socket,io,code){
     lobbies.getRoomInfo({params:{code}})
     .then(data=>{
+        console.log(data.rows)
         const socketids = data.rows.map(user=>redis.get("sid-socketid:"+ user.sessionid))
         Promise.all(socketids)
         .then(socketids=>{

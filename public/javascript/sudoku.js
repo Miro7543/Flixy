@@ -1,5 +1,6 @@
 addDifficultyListeners();
 socket.on("GameStarted",(data)=>{
+    console.log(data.code)
     fetch(`/sudoku/${data.code}`)
     .then(data=>{
         if(data.ok){
@@ -7,6 +8,7 @@ socket.on("GameStarted",(data)=>{
         }
     })
     .then(data=>{
+        console.log(data);
         document.body.innerHTML=data;
         startCountdown();
         const clockLabel = document.querySelector("label.clock");

@@ -34,7 +34,10 @@ function getPlayersInLobby(code){
     return db.query("Select * from lobby_players where code = $1",[code])
     .then(data=>{
         return data.rows.map(player=>
-            `<div class = "playerCont"><h2>${player.username}</h2></div>`
+            `<div class = "playerCont">
+                <img src = "../${player.avatar}">
+                <h2>${player.username}</h2>
+            </div>`
         ).join('\n');
     })
 }
@@ -85,7 +88,7 @@ router.get("/game.js",(req,res)=>{
     })
 })
 
-function validateSpace(code,redirect = true,req){
+function validateSpace(code,redirect = true,req,res){
     return db.query("Select count(*) from lobby_players where code = $1",[code])
     .then(data1=>{
         return db.query("select game from lobbies where code = $1",[code])
@@ -128,7 +131,7 @@ router.get("/:code", (req,res)=>{
     }
 
     validateLobby(req.params.code,true,req)
-    .then(()=>validateSpace(req.params.code,true,req))
+    .then(()=>validateSpace(req.params.code,true,req,res))
     .then(()=>retrieveMessages(req.params.code,req.user))
     .then((data)=>renderLobbyPage(res,{code:req.params.code,messages:data,game:nameMap[req.game]}))
     .catch(err=>{console.error(err)})
@@ -143,7 +146,10 @@ router.post("/leave", (req,res)=>{
 })
 
 function joinLobby(socket,io,code ){
-    socket.join(code)
+    socket.join(code);
+    console.log(code)
+    console.log(io.sockets.adapter.rooms.get(code))
+    // .forEach(socket=>console.log(socket))
     db.query("Select id from lobbies where code = $1",[code])
     .then(lobbyData=>{
         if(!lobbyData.rowCount)
@@ -175,7 +181,7 @@ function joinLobby(socket,io,code ){
 function socketDisconnect(socket,io,code){
     socket.ON("disconnect",()=>{
         if(socket?.user?.sessionid)
-        db.query("delete from players_lobbies using users, lobbies where players_lobbies.userid = users.id and users.sessionid = $1 and players_lobbies.lobbyid = lobbies.id and lobbies.code = $2 and players_lobbies.status = 'in lobby' ",[socket.user.sessionid, code])
+        db.query("delete from players_lobbies using users, lobbies where players_lobbies.userid = users.id and users.sessionid = $1 and players_lobbies.status = 'in lobby' ",[socket.user.sessionid])
         .then(()=>{
             // socket.to(code).emit("playerLeft",{username : socket?.user?.username})
             return getPlayersInLobby(code)
@@ -214,36 +220,36 @@ function attachSocket(socket,io,code){
 function startingGame(socket,io,code){
 
     socket.ON("startGame",()=>{
-        //checkPlayerCount();
+
         // getGame(socket.user.sessionid)
         db.query("Select id,game from lobbies where code = $1",[code])
         .then(data=>{
-            if(data.rowCount)
+            if(data.rowCount){
+                return db.query("Select count(*), game from lobby_players where code = $1 group by game",[code])
+
+            }
+        })
+        .then((data=>{
+            if(data?.rows?.[0]?.count>=gamesConfig[data?.rows?.[0]?.game].minPlayers){
                 return db.query("UPDATE players_lobbies SET status = 'in game' WHERE lobbyid = $1",[data.rows[0].id])
                 .then(()=>data.rows[0].game);
-        })
+            }
+            else{
+                socket.emit("error","Not enough players to start game")
+                throw new Error("");
+            } 
+        }))
         .then(data=>{
             if(data){
-                console.log(data);
                 io.to(code).emit("GameStarted",{game:data,code});
                 moduleMap[data].startGame(socket,io,code);
             }
             else socket.emit("redirect",{url:"/"})
 
         })
+        .catch(err=>{})
     })
 }
-
-function getGame(sessionid){
-    return db.query("Select * from lobby_players where sessionid = $1", [sessionid])
-    .then(data=>{
-
-        if(data.rowCount)
-            return data.rows[0].game;
-        else return;
-    })
-}
-
 
 function requestScript(socket,code){
     db.query("Select game from lobbies where code = $1 ",[code])

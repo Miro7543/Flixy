@@ -58,6 +58,7 @@ function Sudoku(room,...sockets){
         }
         return false;
     }
+    console.log(this.players)
     this.players.forEach((player,index)=>{
         player.ON("guess", (position,number,cb)=>{
             const result = this.guess(player,index,position,number);

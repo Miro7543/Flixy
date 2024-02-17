@@ -14,15 +14,6 @@
         },
         "/lobby":{
             "needsSession":true
-        },
-        "/tic-tac-toe":{
-            "needsSession":true
-        },
-        "/sudoku":{
-            "needsSession":true
-        },
-        "/bulls-and-cows":{
-            "needsSession":true
         }
     },
     "POST":{
