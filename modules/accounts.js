@@ -78,7 +78,7 @@ function startSession(user, res){
             username : data?.rows[0]?.username
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn: `${settings.sessionTime}m`}); 
-        res.cookie("token", token, { maxAge:60*1000*settings.sessionTime,httpOnly:true});
+        res.cookie("token", token, { maxAge:60*1000*settings.sessionTime});
         return data.rows[0].sessionid;
     })
     .then((sessionid)=>{
@@ -87,9 +87,8 @@ function startSession(user, res){
 }
 
 function endSession(req, res){
-    res.cookie("token", null, { maxAge:0,httpOnly:true});
-    redis.del("sid-id:" + req?.user?.sessionid);
-    redis.get("sid-socketid:" + req?.user?.sessionid)
+    res.cookie("token", null, { maxAge:0});
+    redis.del("sid-id:" + req?.user?.sessionid)
     .then((data)=>{
         if(data){
             sockets.notifyLater("You have logged out successfully",data,false,()=>{        
@@ -102,7 +101,6 @@ function endSession(req, res){
 }
 
 router.post("/login",(req,res)=>{
-    console.log(req.body)
     validateLoginInfo(req.body,req,res)
     .then(user=>{
         removePreviosSessions(req.body.username)

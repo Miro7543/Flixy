@@ -53,7 +53,6 @@ function BaC(room,socket1,socket2){
         return {number,cows,bulls};
     }
     this.guess = function(socket,number){
-        console.log(socket.id, this.socket1.id, this.turn.id);
         if(socket.id != this.turn.id)
             return socket.emit("error","Wait for your turn");
         if(!this.validateNumber(number))
@@ -146,7 +145,6 @@ function startGame(socket,io,code){
         const socketids = data.rows.map(user=>redis.get("sid-socketid:"+ user.sessionid))
         Promise.all(socketids)
         .then(socketids=>{
-            console.log(socketids)
             const sockets = socketids.map(socketid=>io.sockets.sockets.get(socketid));
             const game = new BaC(io.in(code),...sockets);
         })

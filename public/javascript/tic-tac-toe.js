@@ -6,11 +6,8 @@ socket.on("GameStarted",(data)=>{
         }
     })
     .then(data=>{
-        console.log("ok")
         document.documentElement.innerHTML = data;
         startCountdown();
-        const clockLabel = document.querySelector("label.clock");
-        startClock(clockLabel,63,60);
         addCellListeners();
     })// document.querySelector("div.playersCont").innerHTML = data.players;
 })

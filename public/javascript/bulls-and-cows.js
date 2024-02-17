@@ -8,8 +8,6 @@ socket.on("GameStarted",(data)=>{
     .then(data=>{
         document.body.innerHTML=data;
         startCountdown();
-        const clockLabel = document.querySelector("label.clock");
-        startClock(clockLabel,63,60); 
         addSubmitFormListeners();
     })
 })
@@ -27,7 +25,6 @@ function addSubmitFormListeners(){
     const submitInput = document.querySelector("form.submitForm>input")
     submitForm.addEventListener("submit", (event)=>{
         event.preventDefault();
-        console.log(submitInput.value);
         if(submitInput.validity.valid){
             socket.emit("submit-number",submitInput.value,removeSubmittionForm);
         }
@@ -47,7 +44,6 @@ function addGuessFormListeners(){
 }
 
 socket.on("startGuessing",(string,turn)=>{
-    console.log(string);
     document.querySelector("div.content").innerHTML=string;
     addGuessFormListeners()
     
@@ -64,7 +60,6 @@ function addGuess(bac, whose){
         <label> ${bac.bulls}<img src="bull.png"></label>
     </div>
     `
-    console.log(whose)
     const guesses = document.querySelector(`div.guesses.${whose}`)
     guesses.innerHTML+=guess;
 

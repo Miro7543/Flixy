@@ -80,6 +80,8 @@ function renderPage(req,res){
         const result = {};
         data.rows.forEach((player,index)=>{
             result["player"+(index+1)] = player.username;
+            if(player.avatar)
+            result["avatar"+(index+1)] = player.avatar;
         })
 
         const reader = fs.createReadStream(path.join("public","html","games","TTT.html"))
@@ -94,7 +96,6 @@ router.get("/:code",(req,res)=>{
 function startGame(socket,io,code){
     lobbies.getRoomInfo({params:{code}})
     .then(data=>{
-        console.log(data.rows)
         const socketids = data.rows.map(user=>redis.get("sid-socketid:"+ user.sessionid))
         Promise.all(socketids)
         .then(socketids=>{

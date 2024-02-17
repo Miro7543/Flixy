@@ -24,6 +24,7 @@ div.playerCont{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-radius: 50px;
     font-size: 2rem;
     font-weight: 400;
     color: white;
@@ -43,7 +44,6 @@ div.board{
     background-color:#368bdf;
     align-items: stretch;
     padding :50px;
-    padding-top: 0;
 }
 
 table{

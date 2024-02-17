@@ -1,6 +1,5 @@
 addDifficultyListeners();
 socket.on("GameStarted",(data)=>{
-    console.log(data.code)
     fetch(`/sudoku/${data.code}`)
     .then(data=>{
         if(data.ok){
@@ -8,11 +7,8 @@ socket.on("GameStarted",(data)=>{
         }
     })
     .then(data=>{
-        console.log(data);
         document.body.innerHTML=data;
         startCountdown();
-        const clockLabel = document.querySelector("label.clock");
-        startClock(clockLabel,63,60); 
         addDifficultyListeners();
     })
 })
@@ -109,10 +105,8 @@ function base10ToBase3(number) {
 }
 
 socket.on("data",(data)=>{
-    console.log(data);
     data.forEach(userInfo=>{
         const playerCont = document.querySelector(`div.player.${userInfo.player}`)
-        console.log(userInfo)
         playerCont.querySelector("label.left").innerHTML = "Left: " + userInfo.left;
         playerCont.querySelector("label.solved").innerHTML = "Solved: " + userInfo.solved;
         playerCont.querySelector("label.percent").innerHTML = "Percentage: " + userInfo.percent+"%";
@@ -129,8 +123,6 @@ function linearToSquarePos(position){
     
     const y1 = Math.floor(y / 3);
     const y2 = y % 3;
-    console.log(position)
-        console.log( {square:(x1*3+y1)+1, cell:(x2*3+y2)+1})
     return {square:(x1*3+y1)+1, cell:(x2*3+y2)+1};
 }   
 socket.on("win",()=>{

@@ -55,7 +55,6 @@ function retrieveMessages(code,user){
 }
 
 router.post("/join", (req,res)=>{
-    console.log(req.body)
     validateLobby(req?.body?.lobby_code,false,req,res)
     .then(()=>validateSpace(req.body.lobby_code,false,req,res))
     .then(()=>{res.redirect(`/lobby/${req?.body?.lobby_code || "0000"}`)})
@@ -63,7 +62,6 @@ router.post("/join", (req,res)=>{
 })
 
 router.post("/create", (req,res)=>{
-    console.log(req.body)
     if(!req.body || !Object.keys(games).includes(req.body.game)){
         res.status(500);
         res.end();
@@ -119,7 +117,6 @@ function validateLobby(code,redirect=true,req,res){
 }
 
 router.get("/:code", (req,res)=>{
-    console.log(req.params);
     if(!req.params || !req.params.code)
     return res.redirect("/");
 
@@ -147,9 +144,6 @@ router.post("/leave", (req,res)=>{
 
 function joinLobby(socket,io,code ){
     socket.join(code);
-    console.log(code)
-    console.log(io.sockets.adapter.rooms.get(code))
-    // .forEach(socket=>console.log(socket))
     db.query("Select id from lobbies where code = $1",[code])
     .then(lobbyData=>{
         if(!lobbyData.rowCount)
@@ -258,7 +252,6 @@ function requestScript(socket,code){
             //message - Server error
             return;
         }
-        console.log(data.rows[0].game);
         socket.emit("get-script", {url: `${data.rows[0].game}.js`})
     })
 }

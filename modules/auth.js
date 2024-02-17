@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const redis = require("./redis");
 const settings = require("../settings.json");
+const db = require("./db");
 
 function isAboutToExpire(exp){
     const timeRemaining = exp * 1000 - Date.now();
@@ -29,7 +30,7 @@ module.exports = {
         const { exp } = user;
         if(isAboutToExpire(exp)){
             const newToken=refreshToken(user);
-            res.cookie("token",newToken,{ maxAge:60*1000*settings.sessionTime,httpOnly:true})
+            res.cookie("token",newToken,{ maxAge:60*1000*settings.sessionTime})
             redis.expire("sid-id:" + user.sessionid,60*settings.sessionTime);
         }
         req.user = user;
@@ -66,7 +67,7 @@ module.exports = {
     },
     setToken:function(req,res){
         if(module.exports.isValid(req.body.token)){
-            res.cookie("token",req.body.token,{maxAge:settings.sessionTime*60*1000, httpOnly:true});
+            res.cookie("token",req.body.token,{maxAge:settings.sessionTime*60*1000});
         }
         else res.end();
     },
@@ -78,7 +79,12 @@ module.exports = {
                 user.id = data;
             }
             else{
-                console.log("ID not found" );
+                db.query("Select id from users where sessionid = $1 ",[user.sessionid])
+                .then(data=>{
+                    if(data.rowCount)
+                        user.id=data.rows[0].id;
+                    else console.log("ID not found" );
+                })
                 
                 //Server error
             }

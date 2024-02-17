@@ -36,16 +36,6 @@ function timeToString(time){
     return `${Math.floor(time/60) < 10 ? "0" : "" }${Math.floor(time/60)}:${time%60 < 10 ? "0" : "" }${time%60}`
 }
 
-function startClock(clock,time,maxTime){
-    clock.innerHTML = timeToString(Math.min(time,maxTime));
-    if(time==0)    
-        return;
-    setTimeout(()=>{
-        startClock(clock,time-1,maxTime);
-    },1000)   
-
-}
-
 const messageInput = document.querySelector("div.messageForm>input");
 function sendMessage(){
     if(messageInput.value=='')return;
@@ -113,6 +103,5 @@ function displayOverlay(text,message=null,expiration = 6,size = null){
 }
 
 socket.on("error",(err)=>{
-    console.log(err);
     ShowError(err);
 })

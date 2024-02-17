@@ -1,5 +1,4 @@
 function handleResponse(data){
-    console.log(data);
     if(data.redirected)
         window.location.href=data.url;
     switch(data.status){

@@ -9,9 +9,6 @@ let io;
 function attachListeners(socket,IO){
     const urlToModule = [
         {reg:RegExp(/\/lobby\/[a-z,A-Z]{4}$/) , module : require("./lobbies")},
-        // {reg:RegExp(/\/sudoku\/[a-z,A-Z]{4}$/) , module : require("./games/sudoku")},
-        // {reg:RegExp(/\/ttt\/[a-z,A-Z]{4}$/) , module : require("./games/TTT")},
-        // {reg:RegExp(/\/lobby\/[a-z,A-Z]{4}$/) , module : sudoku}
     ]
     socket.url = socket.handshake.headers.referer;
     const code = socket.url.slice(-4).toUpperCase();
@@ -71,16 +68,16 @@ module.exports ={
                 if(data)
                 {
                     socket.user = data;
-                    console.log(data.username, data.sessionid, socket.id)
                     redis.set("sid-socketid:" + data.sessionid, socket.id)
                     .then(()=>{
+                        redis.get("sid-socketid:" + data.sessionid)
                         socket.ON = authenticater(socket);
                         attachListeners(socket,io);
                     })
                 } 
             })
             
-        })
+           })
     },
     logoutLastInstance:function(sessionid){
         return redis.get("sid-socketid:" + sessionid)
@@ -96,7 +93,6 @@ module.exports ={
         })
     },
     notification:function (text,socketid,error){
-        console.log(text,socketid,error)
         if(!socketid)return;
         const target = io.sockets.sockets.get(socketid);
         if(!target)return;
@@ -104,7 +100,6 @@ module.exports ={
         else target.emit("notification",{text});
     },
     notifyLater:function(text,socketid,error,cb){
-        console.log(text,socketid,error)
         if(!socketid)return;
         const target = io.sockets.sockets.get(socketid);
         if(!target)return;
@@ -112,8 +107,5 @@ module.exports ={
         else target.emit("notifyLater",text,error,cb);
 
     },
-    disconnectFromRoom:function(userid, lobbyid){
-
-    }
 } 
 

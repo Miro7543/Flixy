@@ -22,7 +22,6 @@ sockets.init(server);
 require("dotenv").config();
 
 app.use((req,res,next)=>{
-    console.log(req.url);
     next()
 })
 
@@ -78,3 +77,11 @@ server.listen(process.env.PORT,()=>{
 });
 
 module.exports = app;
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    process.exit(1); 
+  });
+  
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  });

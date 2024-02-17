@@ -48,7 +48,6 @@ div.board{
     align-items: stretch;
     padding :50px;
     border-radius: 50px;
-    padding-top: 0;
 }
 
 div.sudokuCont{
@@ -158,8 +157,8 @@ div.Info{
 }
 
 div.votingCont{
-    /* display: flex; */
-    display: none;
+    display: flex;
+    /* display: none; */
     flex-direction: column;
     flex: 1;
     justify-content: center;
